@@ -1,0 +1,81 @@
+html {
+    display: flex;
+    font-size: 24px;
+    font-family: 'Oswald', sans-serif;
+    scroll-behavior: smooth;
+    transition: all 300ms ease-in-out;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+}
+
+body:has(dialog[open]) {
+    overflow: hidden;
+}
+
+header {
+    display: flex;
+    justify-content: Center;
+    background-color: rgb(10, 34, 44);
+    height: 100px;
+    padding: 0px 10px;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    background-color: rgb(7, 24, 32);
+    padding: 0 10px;
+    padding-bottom: 50px;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    background-color: rgb(10, 34, 44);
+    height: 100px;
+    padding: 0px 10px;
+}
+
+.pokedex-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    flex: 1;
+}
+
+
+.contentlimit-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    max-width: 1920px;
+    width: 100%;
+}
+
+.contentlimit_main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 1920px;
+}
+
+.contentlimit-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    max-width: 1920px;
+}

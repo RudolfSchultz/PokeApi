@@ -1,38 +1,49 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PokeDex</title>
     <link rel="stylesheet" href="./styles/main.css">
-    <link rel="stylesheet" href="./styles/template.css">
 
 </head>
+
 <body onload="init()">
-    <h3 id="PokemonName"></h3>
-    <img id="Pokemon" class="Pokemon">
-    <p id="HP"></p>
-    <p id="Attack"></p>
-    <p id="Defense"></p>
-    <p id="SpecialAttack"></p>
-    <p id="SpecialDefense"></p>
-    <p id="Speed"></p>
 
-<header>
 
-</header>
 
-<main>
+    <header>
+        <div class="contentlimit-header">
+            <div class="logo-container">
+                <img src="./assets/pokedex.png" alt="PokeDex Logo" class="logo">
+                <h1>PokeDex</h1>
+            </div>
+            <div section class="search-container">
+                <span id="pokemon-count">0</span>
+                <input type="text" id="search-input" placeholder="Search Pokemon...">
+            </div>
+        </div>
 
-</main>
+    </header>
 
-<footer>
-    
-</footer>
+    <main class="contentlimit-main">
+        <div id="pokedex-container" class="pokedex-container">
+            <!-- Pokemon cards will be rendered here -->
+        </div>
+    </main>
+
+    <footer class="contentlimit-footer">
+        <p>&copy; 2025 PokeDex. All rights reserved.</p>
+
+    </footer>
 
 </body>
-
-<script src="./scripts/main.js"></script>
 <script src="./scripts/template.js"></script>
+<script src="./scripts/main.js"></script>
+
+    <link rel="stylesheet" href="./styles/template.css">
+
+
 
 </html>

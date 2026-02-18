@@ -1,51 +1,54 @@
-
-let pokemon1;
-
-
-
+const myPokedex = {};
 
 async function init() {
-    for (let i = 11; i <= 11; i++) {
-         await getPokemon(i);
+    for (let i = 1; i <= 25; i++) {
+        await getPokemon(i);
     }
+    console.table(myPokedex);
+    renderPokemon();
 }
 
 async function getPokemon(id) {
     let url = `https://pokeapi.co/api/v2/pokemon/${id}`;
     let response = await fetch(url);
     let pokemon = await response.json();
-    let keys = Object.keys(pokemon);
-    console.log(pokemon);
-    // console.log(pokemon);
-    // console.log(keys);
-    // console.log(pokemon.id);
-    // console.log(pokemon.name);
-        document.getElementById("PokemonName").innerText = pokemon.name;
-    // console.log(pokemon.forms[0].url);
-    let PokemonImage = pokemon.forms[0].url;
-    getPokemonImage(PokemonImage);
-    getPokemonStats(pokemon.stats);
+
+    Object.defineProperty(myPokedex, id, {
+        value: {
+            name: pokemon.name,
+            image: pokemon.sprites.front_default,
+            types: pokemon.types.map(type => type.type.name),
+            height: pokemon.height,
+            weight: pokemon.weight,
+            experience: pokemon.base_experience,
+            abilities: pokemon.abilities.map(ability => ability.ability.name),
+            stats: getPokemonStats(pokemon),
+        },
+    });
 }
 
-async function getPokemonImage(pokemonUrl) {
-    let url = pokemonUrl;
-    let response = await fetch(url);
-     pokemon1 = await response.json();
-        // console.log(pokemon1);
-        let PokemonImage = pokemon1.sprites.front_default;
+function getPokemonStats(pokemon) {
+    return {
+        HP: pokemon.stats[0].base_stat,
+        Attack: pokemon.stats[1].base_stat,
+        Defense: pokemon.stats[2].base_stat,
+        SpecialAttack: pokemon.stats[3].base_stat,
+        SpecialDefense: pokemon.stats[4].base_stat,
+        Speed: pokemon.stats[5].base_stat
+    }
+};
 
 
-        // console.log(PokemonImage);
-        document.getElementById("Pokemon").src = PokemonImage;
+function renderPokemon() {
+    const data = Object.getOwnPropertyNames(myPokedex);
+    let html = '';
+    let listContainer = document.getElementById('pokedex-container');
+
+    data.forEach(id => {
+        html += renderPokemonFrontTemplate(id);
+    });
+
+    listContainer.innerHTML = html;
+    console.log(html);
 }
 
-async function getPokemonStats(stats) {
-    let stats1 = stats;
-    // console.log(stats1);
-    document.getElementById("HP").innerText = "HP: " + stats1[0].base_stat;
-    document.getElementById("Attack").innerText = "Attack: " + stats1[1].base_stat;
-    document.getElementById("Defense").innerText = "Defense: " + stats1[2].base_stat;
-    document.getElementById("SpecialAttack").innerText = "Special Attack: " + stats1[3].base_stat;
-    document.getElementById("SpecialDefense").innerText = "Special Defense: " + stats1[4].base_stat;
-    document.getElementById("Speed").innerText = "Speed: " + stats1[5].base_stat;
-}

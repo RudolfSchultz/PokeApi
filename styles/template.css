@@ -1,9 +1,29 @@
+.pokemon-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
 
-
-
-.Pokemon {
-    width: 100px;
-    height: 100px;
+.pokemon-image {
+    width: 100%;
+    height: auto;
     object-fit: contain;
-    background-color: #202181;
+}
+
+.pokemon-card {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    background-color: rgba(66, 108, 128, 0.897);
+    padding: 20px;
+    width: 20%;
+    height: fit-content;
+    border-radius: 10px;
+}
+
+.pokemon-name {
+    text-align: center;
+    color: rgb(255, 255, 255);
+    font-size: 0.5em;
 }
