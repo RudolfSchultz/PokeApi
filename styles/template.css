@@ -27,11 +27,11 @@
 .pokemon-card {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
     justify-content: center;
     background-color: rgba(66, 108, 128, 0.897);
-    padding: 20px;
-    width: 15%;
+    padding: 10px;
+    max-width: 10%;
     height: fit-content;
     border-radius: 10px;
 }
