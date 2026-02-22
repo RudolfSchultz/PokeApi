@@ -3,16 +3,21 @@ const GenList = [];
 let pokemon;
 
 
-const selectElement1 = document.getElementById('gen-options');
+const selectElementGen = document.getElementById('gen-options');
+const selectElementGenkeys = [];
+
 
 
 async function init() {
     await getPokemonGen();
-    onPageLoad();
+    getLocalStorage();
+    viewGeneration();
 
-    for (let i = 1; i <= 25; i++) {
+    for (let i = 7; i <= 12; i++) {
         await getPokemon(i);
     }
+    ;
+
     // console.table(myPokedex);        
     renderPokemon();
 }
@@ -25,15 +30,9 @@ async function getPokemonGen() {
     Object.keys(data.results).forEach(key => {
         GenList.push(data.results[key].name);
     });
-
-
     fillDropdown();
 };
 
-selectElement1.addEventListener('change', (event) => {
-    const selectedValue = event.target.value;
-    localStorage.setItem('selectedGen', selectedValue);
-});
 
 
 function fillDropdown() {
@@ -41,32 +40,34 @@ function fillDropdown() {
         const option = document.createElement('option');
         option.value = index + 1;
         option.textContent = gen;
-        selectElement1.appendChild(option);
+        selectElementGen.appendChild(option);
     })
 };
 
-function onPageLoad() {
-    // Prüfen, ob schon mal was ausgewählt wurde
+function getLocalStorage() {
     const savedGen = localStorage.getItem('selectedGen');
     if (savedGen) {
-        // Wenn ja: Dropdown auf diesen Wert setzen und Bilder laden
-        selectElement1.value = savedGen;
+        selectElementGen.value = savedGen;
     } else {
-        // Wenn nein: Standardwert (z.B. Gen 1) laden
-        selectElement1.value = 1;
+        selectElementGen.value = 1;
     }
 }
 
-
-async function getPokemon(id) {
+async function getPokemonURL(id) {
     let url = `https://pokeapi.co/api/v2/pokemon/${id}`;
     let response = await fetch(url);
     pokemon = await response.json();
+}
+
+async function getPokemon(id) {
+    await getPokemonURL(id);
+    const genText = selectElementGen.selectedOptions[0].textContent;
+    const gameKey = selectElementGenkeys[0];
 
     Object.defineProperty(myPokedex, id, {
         value: {
             name: pokemon.name,
-            image: pokemon.sprites.versions['generation-vi']['omegaruby-alphasapphire'].front_default,
+            image: pokemon.sprites.versions[`${genText}`]?.[gameKey]?.front_default || pokemon.sprites.front_default,
             types: pokemon.types.map(type => type.type.name),
             height: pokemon.height,
             weight: pokemon.weight,
@@ -102,11 +103,14 @@ function renderPokemon() {
 }
 
 function viewGeneration() {
-    const selectedGen = selectElement1.selectedOptions[0].textContent;
-    console.log(`Ausgewählte Generation: ${selectedGen}`);
-    // Hier kannst du die Logik hinzufügen, um die Pokémon der ausgewählten Generation anzuzeigen
+    getPokemonURL(1).then(() => {
+        const selectedGen = selectElementGen.selectedOptions[0].textContent;
+        console.log(`Ausgewählte Generation: ${selectedGen}`);
+        // Hier kannst du die Logik hinzufügen, um die Pokémon der ausgewählten Generation anzuzeigen
 
-    getPokemonByGeneration(selectedGen);
+        getPokemonByGeneration(selectedGen);
+    });
+
 
     // return pokemon.spites.versions[selectedGen][key].front_default;
 
@@ -116,9 +120,20 @@ function getPokemonByGeneration(selectedGen) {
     Object.keys(pokemon.sprites.versions[`${selectedGen}`])
         .forEach(key => {
             if (pokemon.sprites.versions[`${selectedGen}`][`${key}`].front_default) {
-                let keys =+ key;
-                console.log(keys)
+                selectElementGenkeys.push(key);
             }
         });
-
+    // console.log(selectElementGenkeys);
+    // return selectElementGenkeys;
 }
+
+
+
+
+
+
+
+selectElementGen.addEventListener('change', (event) => {
+    const selectedValue = event.target.value;
+    localStorage.setItem('selectedGen', selectedValue);
+});
