@@ -1,6 +1,10 @@
 const myPokedex = {};
 const GenList = [];
 let pokemon;
+let alltypes;
+const generationURL = `https://pokeapi.co/api/v2/generation`;
+const pokemonURL = `https://pokeapi.co/api/v2/pokemon/`;
+const typeURL = `https://pokeapi.co/api/v2/type/`;
 
 
 const selectElementGen = document.getElementById('gen-options');
@@ -23,7 +27,7 @@ async function init() {
 }
 
 async function getPokemonGen() {
-    let url = `https://pokeapi.co/api/v2/generation`;
+    let url = generationURL;
     let response = await fetch(url);
     let data = await response.json();
 
@@ -54,7 +58,7 @@ function getLocalStorage() {
 }
 
 async function getPokemonURL(id) {
-    let url = `https://pokeapi.co/api/v2/pokemon/${id}`;
+    let url = `${pokemonURL}${id}`;
     let response = await fetch(url);
     pokemon = await response.json();
 }
@@ -127,9 +131,29 @@ function getPokemonByGeneration(selectedGen) {
     // return selectElementGenkeys;
 }
 
+async function getPokemonTypeURL() {
+    let url = typeURL;
+    let response = await fetch(url);
+    let types = await response.json();
+    alltypes = types.results;
+}
 
+async function getPokemonTypeIMG() {
+    await getPokemonTypeURL();
+        alltypes.forEach(type => {
+            let url = type.url;
+                                            console.log(url)
+        let response = fetch(url);
+        response.then(res => res.json())
+            .then(data => {
+                                            console.log(data)
 
-
+            })
+        
+        
+        ;
+    });
+}
 
 
 
