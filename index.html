@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PokeDex</title>
     <link rel="stylesheet" href="./styles/main.css">
+    <link rel="shortcut icon" href="assets/pokeball.svg" type="image/x-icon">
+
 
 </head>
 
@@ -14,28 +16,23 @@
 
 
     <header>
-        <div class="contentlimit">
+        <div class="contentlimit justify-between">
             <div class="logo-container">
-                <img src="./assets/pokedex.png" alt="PokeDex Logo" class="logo">
+                <!-- <img src="./assets/pokedex.png" alt="PokeDex Logo" class="logo"> -->
                 <h1>PokeDex</h1>
             </div>
             <div section class="search-container">
                 <span id="pokemon-count">0</span>
                 <input type="text" id="search-input" placeholder="Search Pokemon...">
             </div>
-        </div>
-        <!-- Dropdownmenu -->
-        <div class="generation-control">
-            <label for="gen-options">Wähle Generation:</label>
-            <select name="generation" id="gen-options"></select>
+            <div class="generation-control">
+                <label for="gen-options">Wähle Generation:</label>
+                <select name="generation" id="gen-options"></select>
+            </div>
+
         </div>
 
 
-        <!-- <div class="generation-control">
-            <label for="gen-select">Wähle Generation:</label>
-            <select id="gen-select"></select>
-        </div> -->
-        <!-- dropdownmenu -->
     </header>
 
     <main>
@@ -60,3 +57,4 @@
 
 
 </html>
+
