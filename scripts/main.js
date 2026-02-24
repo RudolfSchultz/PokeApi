@@ -9,15 +9,15 @@ const typeURL = `https://pokeapi.co/api/v2/type/`;
 
 const selectElementGen = document.getElementById('gen-options');
 const selectElementGenkeys = [];
-
+const pokemontypes = [];
 
 
 async function init() {
     await getPokemonGen();
     getLocalStorage();
     viewGeneration();
-
-    for (let i = 7; i <= 12; i++) {
+    getPokemonTypeIMG();
+    for (let i = 1; i <= 210; i++) {
         await getPokemon(i);
     }
     ;
@@ -53,7 +53,7 @@ function getLocalStorage() {
     if (savedGen) {
         selectElementGen.value = savedGen;
     } else {
-        selectElementGen.value = 1;
+        selectElementGen.value = 5;
     }
 }
 
@@ -98,26 +98,17 @@ function renderPokemon() {
     const data = Object.getOwnPropertyNames(myPokedex);
     let html = '';
     let listContainer = document.getElementById('pokedex-container');
-
     data.forEach(id => {
         html += renderPokemonFrontTemplate(id);
     });
-
     listContainer.innerHTML = html;
 }
 
 function viewGeneration() {
     getPokemonURL(1).then(() => {
         const selectedGen = selectElementGen.selectedOptions[0].textContent;
-        console.log(`Ausgewählte Generation: ${selectedGen}`);
-        // Hier kannst du die Logik hinzufügen, um die Pokémon der ausgewählten Generation anzuzeigen
-
         getPokemonByGeneration(selectedGen);
     });
-
-
-    // return pokemon.spites.versions[selectedGen][key].front_default;
-
 }
 
 function getPokemonByGeneration(selectedGen) {
@@ -127,8 +118,6 @@ function getPokemonByGeneration(selectedGen) {
                 selectElementGenkeys.push(key);
             }
         });
-    // console.log(selectElementGenkeys);
-    // return selectElementGenkeys;
 }
 
 async function getPokemonTypeURL() {
@@ -138,26 +127,53 @@ async function getPokemonTypeURL() {
     alltypes = types.results;
 }
 
+function getTypeImage(data, generation) {
+    try {
+        const genSprites = data.sprites[generation];
+        if (!genSprites) return null;
+        for (let key in genSprites) {
+            const image = genSprites[key]?.name_icon;
+            if (image) return image;
+        }
+    } catch (e) {
+        console.log('Error:', e);
+    }
+    return null;
+}
+
 async function getPokemonTypeIMG() {
     await getPokemonTypeURL();
-        alltypes.forEach(type => {
-            let url = type.url;
-                                            console.log(url)
+    alltypes.forEach(type => {
+        let url = type.url;
         let response = fetch(url);
         response.then(res => res.json())
             .then(data => {
-                                            console.log(data)
-
-            })
-        
-        
-        ;
+                const generation = selectElementGen.selectedOptions[0].textContent;
+                const image = getTypeImage(data, generation);
+                if (image) {
+                    pokemontypes.push({
+                        name: data.name,
+                        image: image
+                    });
+                }
+            });
     });
 }
 
+function renderPokemonType(...types) {
+    const images = [];
 
+    types.forEach(type => {
+        const foundType = pokemontypes.find(t => t.name === type.toLowerCase());
+        if (foundType) {
+            images.push(foundType.image);
+        }
+    });
+    return images;
+}
 
 selectElementGen.addEventListener('change', (event) => {
     const selectedValue = event.target.value;
     localStorage.setItem('selectedGen', selectedValue);
+    location.reload();
 });

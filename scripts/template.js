@@ -5,5 +5,5 @@ function renderPokemonFrontTemplate(id) {
                     <h2 class="pokemon-name">${myPokedex[id].name}</h2>
                 </div>    
                 <div class="pokemon-image" style="background-image: url('${myPokedex[id].image}')"></div>
-                <p class="pokemon-types">${myPokedex[id].types.join(', ')}</p>
+                <div class="pokemon-types">${renderPokemonType(...myPokedex[id].types).map(img => `<img src="${img}" alt="type-icon" class="type-icon">`).join('')}</div>
             </a>`}; 
