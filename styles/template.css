@@ -9,9 +9,9 @@
 .pokemon-card {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
+    gap: 10px;
     background-color: rgba(66, 108, 128, 0.897);
     padding: 10px;
     height: fit-content;

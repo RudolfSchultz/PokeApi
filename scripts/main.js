@@ -5,6 +5,9 @@ let alltypes;
 const generationURL = `https://pokeapi.co/api/v2/generation`;
 const pokemonURL = `https://pokeapi.co/api/v2/pokemon/`;
 const typeURL = `https://pokeapi.co/api/v2/type/`;
+const dialog = document.getElementById('pokemon-view');
+const dialogElement = document.querySelector("dialog");
+
 
 
 const selectElementGen = document.getElementById('gen-options');
@@ -177,3 +180,18 @@ selectElementGen.addEventListener('change', (event) => {
     localStorage.setItem('selectedGen', selectedValue);
     location.reload();
 });
+
+function openDialog(id) {
+    const dialogBody = document.getElementById('dialog-body');
+    dialogBody.innerHTML = renderPokemonDetailsTemplate(id);
+    dialog.showModal();
+}
+
+function closeDialog() {
+    dialog.close();
+}
+
+dialogElement.addEventListener('click', (event) => {
+    if (event.target === dialog) {
+        closeDialog();
+    }});
