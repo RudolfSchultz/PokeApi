@@ -16,6 +16,8 @@
     padding: 10px;
     height: fit-content;
     border-radius: 10px;
+    width: 200px;
+    height: 260px;
 }
 
 .pokemon-card-header {
@@ -57,4 +59,9 @@
     flex-wrap: wrap;
     color: rgb(255, 255, 255);
     font-size: 0.6em;
+}
+
+.pokemon-types img {
+    height: 32px;
+    width: auto;
 }
