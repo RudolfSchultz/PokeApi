@@ -4,12 +4,13 @@ let pokemon;
 let alltypes;
 const generationURL = `https://pokeapi.co/api/v2/generation`;
 const pokemonURL = `https://pokeapi.co/api/v2/pokemon/`;
+const pokemonEvolutionURL = `https://pokeapi.co/api/v2/evolution-chain/`;
 const typeURL = `https://pokeapi.co/api/v2/type/`;
 const dialog = document.getElementById('pokemon-view');
 const dialogElement = document.querySelector("dialog");
 
 
-
+const decisionOptionsContent = document.getElementById('decision-option-content');
 const selectElementGen = document.getElementById('gen-options');
 const selectElementGenkeys = [];
 const pokemontypes = [];
@@ -22,10 +23,7 @@ async function init() {
     getPokemonTypeIMG();
     for (let i = 1; i <= 50; i++) {
         await getPokemon(i);
-    }
-    ;
-
-    // console.table(myPokedex);        
+    };
     renderPokemon();
 }
 
@@ -182,7 +180,7 @@ selectElementGen.addEventListener('change', (event) => {
 });
 
 function openDialog(id) {
-    const dialogBody = document.getElementById('dialog-body');
+    const dialogBody = document.getElementById('pokemon-view');
     dialogBody.innerHTML = renderPokemonDetailsTemplate(id);
     dialog.showModal();
 }
@@ -199,5 +197,15 @@ dialogElement.addEventListener('click', (event) => {
 
 
 function decisionOptions(option, id) {
-    renderOption[option](id);
+    switch (option) {
+        case 'main':
+            decisionOptionsContent.innerHTML = renderOptionmain(id);
+            break;
+        case 'stats':
+            decisionOptionsContent.innerHTML = renderOptionstats(id);
+            break;
+        case 'evo':
+            decisionOptionsContent.innerHTML = renderOptionevo(id);
+            break;
+    }
 }

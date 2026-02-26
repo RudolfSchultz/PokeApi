@@ -21,16 +21,23 @@ function renderPokemonDetailsTemplate(id) {
                     <button onclick="decisionOptions('evo', ${id})">Evo</button>
                 </div>
                 <div class="pokemon-decision-options">
-                                <div></div>
+                                <div id="decision-option-content"></div>
                 </div>
                 `};
+
+
+
+
+
+
+
 
 function renderOptionmain(id) {
     return `<div class="pokemon-main">
                 <p>Height: ${myPokedex[id].height}</p>
                 <p>Weight: ${myPokedex[id].weight}</p>
                 <p>Base Experience: ${myPokedex[id].base_experience}</p>
-                <p>Abilities: ${myPokedex[id].abilities.map(ability => ability.ability.name).join(', ')}</p>
+                <p>Abilities: ${myPokedex[id].abilities.join(', ')}</p>
             </div>`;
 }
 
@@ -48,7 +55,7 @@ function renderOptionstats(id) {
 
 function renderOptionevo(id) {
     return `<div class="pokemon-evo">
-                <p>Evo Chain</p>
+                <p>Evo Chain ${id}</p>
             </div>`;
 }
 // main // stats // evo chain
