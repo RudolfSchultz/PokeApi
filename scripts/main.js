@@ -198,4 +198,6 @@ dialogElement.addEventListener('click', (event) => {
 
 
 
-function decisionOptions() {    }
+function decisionOptions(option, id) {
+    renderOption[option](id);
+}
