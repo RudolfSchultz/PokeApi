@@ -16,6 +16,9 @@ function renderPokemonDetailsTemplate(id) {
                 </div>
                 <div class="pokemon-image" style="background-image: url('${myPokedex[id].image}')"></div>
                 <div class="pokemon-details-options">
+                <div class="pokemon-decision-options">
+                                <div> ${decisionOptions()} /div>
+                </div>
                 `}; 
 
 
