@@ -210,3 +210,15 @@ function decisionOptions(option, id) {
             break;
     }
 }
+
+
+async function getPokemonEvolutionURL(id) {
+    let url = `${pokemonEvolutionURL}${id}`;
+    let response = await fetch(url);
+    let evolutionData = await response.json();
+    return evolutionData;
+}
+
+function getEvolutionChainView() {
+    
+}
