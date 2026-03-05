@@ -10,7 +10,6 @@ const dialog = document.getElementById('pokemon-view');
 const dialogElement = document.querySelector("dialog");
 
 
-const decisionOptionsContent = document.getElementById('decision-option-content');
 const selectElementGen = document.getElementById('gen-options');
 const selectElementGenkeys = [];
 const pokemontypes = [];
@@ -197,15 +196,17 @@ dialogElement.addEventListener('click', (event) => {
 
 
 function decisionOptions(option, id) {
+    const content = document.getElementById('decision-option-content');
+    content.innerHTML = '';
     switch (option) {
         case 'main':
-            decisionOptionsContent.innerHTML = renderOptionmain(id);
+            content.innerHTML = renderOptionmain(id);
             break;
         case 'stats':
-            decisionOptionsContent.innerHTML = renderOptionstats(id);
+            content.innerHTML = renderOptionstats(id);
             break;
         case 'evo':
-            decisionOptionsContent.innerHTML = renderOptionevo(id);
+            content.innerHTML = renderOptionevo(id);
             break;
     }
 }

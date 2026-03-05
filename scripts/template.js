@@ -26,12 +26,6 @@ function renderPokemonDetailsTemplate(id) {
                 `};
 
 
-
-
-
-
-
-
 function renderOptionmain(id) {
     return `<div class="pokemon-main">
                 <p>Height: ${myPokedex[id].height}</p>
