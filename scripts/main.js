@@ -20,7 +20,7 @@ async function init() {
         getLocalStorage();
         viewGeneration();
         await getPokemonTypeIMG();
-        for (let i = 1; i <= 150; i++) {
+        for (let i = 1; i <= 750; i++) {
                 await getPokemon(i);
         };
         renderPokemon();
@@ -158,7 +158,6 @@ async function getPokemonTypeIMG() {
 
 function renderPokemonType(...types) {
         const images = [];
-
         types.forEach(type => {
                 const foundType = pokemontypes.find(t => t.name === type.toLowerCase());
                 if (foundType) {
@@ -205,18 +204,12 @@ function decisionOptions(option, id) {
                         content.innerHTML = renderOptionstats(id);
                         break;
                 case 'evo':
-                        content.innerHTML = renderOptionevo(id);
+                        // renderEvolutionImages returns a promise now
+                        renderEvolutionImages(id).then(html => {
+                                content.innerHTML = html;
+                        });
                         break;
         }
-}
-
-
-
-
-async function getPokemonEvolutionURL(id) {
-        let URL = `${pokemonEvolutionURL}${id}`;
-        let evolutionData = await FetchURLToJason(URL);
-        return evolutionData;
 }
 
 async function getEvolutionChainImage(id) {
@@ -229,7 +222,8 @@ async function getEvolutionChainImage(id) {
         const flatChain = flattenEvolutionChain(evolutionData.chain);
         flatChain.forEach(p => {
                 evolutionCache[p.id] = flatChain;
-        }); return flatChain;
+        }); 
+        return flatChain;
 }
 
 function flattenEvolutionChain(chainNode) {
@@ -247,3 +241,20 @@ function flattenEvolutionChain(chainNode) {
         }
         return results;
 }
+
+
+// Render evolution images after ensuring cache is populated.
+// This helper now returns a promise that resolves to the HTML string.
+async function renderEvolutionImages(id) {
+        // wait for the evolution data to be fetched and cached
+        await getEvolutionChainImage(id);
+        // once the cache is ready, return the template
+        return renderOptionevo(id);
+}
+
+
+function renderPokemonFrontTemplate(id) {
+        for (const type of evolutionCache[id] || []) {
+        }
+        console.log(evolutionCache[id]);
+}                  

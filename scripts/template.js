@@ -47,11 +47,18 @@ function renderOptionstats(id) {
             </div>`;
 }
 
+// function renderOptionevo(id) {
+//     return `<div class="pokemon-evo">
+//                 <p id="evo-chain">Evo Chain ${id}</p>
+//             </div>`;
+// }
+
 function renderOptionevo(id) {
-    return `<div class="pokemon-evo">
-                <p>Evo Chain ${id}</p>
-            </div>`;
-}
+    return `<div class="pokemon-evo"> 
+                <img src="${myPokedex[[evolutionCache[id][0].id]].image}" alt="${evolutionCache[id][0].name}">
+                <img src="${myPokedex[[evolutionCache[id][1].id]].image}" alt="${evolutionCache[id][1].name}">
+                <img src="${myPokedex[[evolutionCache[id][2].id]].image}" alt="${evolutionCache[id][2].name}">
+            </div>`}
 // main // stats // evo chain
 // main -> height, weight, base experience, abilities
 // stats -> hp, attack, defense, sp. attack, sp. defense, speed
