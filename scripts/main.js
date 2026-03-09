@@ -186,9 +186,13 @@ function closeDialog() {
 }
 
 dialogElement.addEventListener('click', (event) => {
-        if (event.target === dialog) {
+        if (event.target === dialogElement) {
                 closeDialog();
         }
+});
+
+document.getElementById('pokemon-view').addEventListener('click', (event) => {
+        event.stopPropagation();
 });
 
 
@@ -204,7 +208,6 @@ function decisionOptions(option, id) {
                         content.innerHTML = renderOptionstats(id);
                         break;
                 case 'evo':
-                        // renderEvolutionImages returns a promise now
                         renderEvolutionImages(id).then(html => {
                                 content.innerHTML = html;
                         });
@@ -222,7 +225,7 @@ async function getEvolutionChainImage(id) {
         const flatChain = flattenEvolutionChain(evolutionData.chain);
         flatChain.forEach(p => {
                 evolutionCache[p.id] = flatChain;
-        }); 
+        });
         return flatChain;
 }
 
@@ -243,18 +246,16 @@ function flattenEvolutionChain(chainNode) {
 }
 
 
-// Render evolution images after ensuring cache is populated.
-// This helper now returns a promise that resolves to the HTML string.
 async function renderEvolutionImages(id) {
-        // wait for the evolution data to be fetched and cached
         await getEvolutionChainImage(id);
-        // once the cache is ready, return the template
-        return renderOptionevo(id);
+        return renderPokemonfindaname(id);
 }
 
-
-function renderPokemonFrontTemplate(id) {
-        for (const type of evolutionCache[id] || []) {
-        }
-        console.log(evolutionCache[id]);
+function renderPokemonfindaname(id) {
+        let assembleEvoHTML = '';
+        evolutionCache[id].forEach((thing) => {
+                assembleEvoHTML += renderOptionevo(thing);
+        });
+        return assembleEvoHTML;
 }                  
+
