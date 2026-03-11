@@ -20,7 +20,7 @@ async function init() {
     getLocalStorage();
     viewGeneration();
     await getPokemonTypeIMG();
-    for (let i = 1; i <= 150; i++) {
+    for (let i = 1; i <= 750; i++) {
         await getPokemon(i);
     };
     renderPokemon();
