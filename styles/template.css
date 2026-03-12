@@ -28,9 +28,7 @@
 }
 
 .pokemon-id {
-    display: flex;
-    align-items: center;
-    flex: 0 0 auto;
+    position: relative;
     color: rgb(255, 255, 255);
     font-size: 0.5em;
 }
@@ -41,8 +39,7 @@
     font-size: 0.8em;
     text-transform: capitalize;
     flex: 0 0 auto;
-    margin: 0;
-    margin-left: auto;
+    margin: auto;
 }
 
 .pokemon-image {
@@ -66,6 +63,78 @@
     height: 32px;
     width: auto;
 }
+
+.grass {
+    background-color: rgb(120, 200, 80);
+}
+
+.fire {
+    background-color: rgb(240, 128, 48);
+}
+
+.water {
+    background-color: rgb(104, 144, 240);
+}
+
+.bug {
+    background-color: rgb(168, 184, 32);
+}
+
+.normal {
+    background-color: rgb(168, 168, 120);
+}
+
+.poison {
+    background-color: rgb(160, 64, 160);
+}
+
+.electric {
+    background-color: rgb(248, 208, 48);
+}
+
+.ground {
+    background-color: rgb(224, 192, 104);
+}
+
+.fairy {
+    background-color: rgb(238, 153, 172);
+}
+
+.psychic {
+    background-color: rgb(248, 88, 136);
+}
+
+.fighting {
+    background-color: rgb(192, 48, 40);
+}
+
+.rock {
+    background-color: rgb(184, 160, 56);
+}
+
+.ghost {
+    background-color: rgb(112, 88, 152);
+}
+
+.ice {
+    background-color: rgb(152, 216, 216);
+}
+
+.dragon {
+    background-color: rgb(112, 56, 248);
+}
+
+.dark {
+    background-color: rgb(112, 88, 72);
+}
+
+.steel {
+    background-color: rgb(184, 184, 208);
+}
+
+
+
+
 
 /* Dialog */
 
