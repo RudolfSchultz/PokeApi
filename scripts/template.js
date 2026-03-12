@@ -4,7 +4,7 @@ function renderPokemonFrontTemplate(id) {
                     <div class="pokemon-id">#${id}</div>
                     <h2 class="pokemon-name">${myPokedex[id].name}</h2>
                 </div>    
-                <div class="pokemon-image" style="background-image: url('${myPokedex[id].image}')"></div>
+                <div class="pokemon-image ${myPokedex[id].types[0]}" style="background-image: url('${myPokedex[id].image}')"></div>
                 <div class="pokemon-types">${renderPokemonType(...myPokedex[id].types).map(img => `<img src="${img}" alt="type-icon" class="type-icon">`).join('')}</div>
             </a>`};
 
@@ -48,14 +48,32 @@ function renderOptionmain(id) {
 }
 
 function renderOptionstats(id) {
-    return `<div class="pokemon-stats">
-                <p>HP: ${myPokedex[id].stats.HP}</p>
-                <p>Attack: ${myPokedex[id].stats.Attack}</p>
-                <p>Defense: ${myPokedex[id].stats.Defense}</p>
-                <p>Special Attack: ${myPokedex[id].stats.SpecialAttack}</p>
-                <p>Special Defense: ${myPokedex[id].stats.SpecialDefense}</p>
-                <p>Speed: ${myPokedex[id].stats.Speed}</p>
-            </div>`;
+    return `<table class="pokemon-stats">
+                <tr>
+                    <td>HP:</td>
+                    <td>${myPokedex[id].stats.HP}</td>
+                </tr>
+                <tr>
+                    <td>Attack:</td>
+                    <td>${myPokedex[id].stats.Attack}</td>
+                </tr>
+                <tr>
+                    <td>Defense:</td>
+                    <td>${myPokedex[id].stats.Defense}</td>
+                </tr>
+                <tr>
+                    <td>Special Attack:</td>
+                    <td>${myPokedex[id].stats.SpecialAttack}</td>
+                </tr>
+                <tr>
+                    <td>Special Defense:</td>
+                    <td>${myPokedex[id].stats.SpecialDefense}</td>
+                </tr>
+                <tr>
+                    <td>Speed:</td>
+                    <td>${myPokedex[id].stats.Speed}</td>
+                </tr>
+            </table>`;
 }
 
 function renderOptionevo(thing) {
