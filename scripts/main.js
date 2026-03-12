@@ -10,22 +10,50 @@ const SpeciesURL = `https://pokeapi.co/api/v2/pokemon-species/`;
 const dialog = document.getElementById('pokemon-view');
 const dialogElement = document.querySelector("dialog");
 const selectElementGen = document.getElementById('gen-options');
+const selectElementCount = document.getElementById('count-options');
 const selectElementGenkeys = [];
 const pokemontypes = [];
 const evolutionCache = {};
-
+const PokemonList = {};
+let range;
+const CountLimits = {
+  1: [0, 151],
+  2: [151, 251],
+  3: [251, 386],
+  4: [386, 493],
+  5: [493, 649],
+  6: [649, 721],
+  7: [721, 809],
+  8: [809, 905],
+  9: [905, 1025]
+};
 
 async function init() {
     await getPokemonGen();
+    fillCounterDropDown();
     getLocalStorage();
     viewGeneration();
     await getPokemonTypeIMG();
-    for (let i = 1; i <= 750; i++) {
+    for (let i = range[0]; i <= range[1]; i++) {
         await getPokemon(i);
     };
     renderPokemon();
 }
 
+function whichCount() {
+    const selectedCount = selectElementCount.selectedOptions[0].value;
+    range = CountLimits[selectedCount];
+}
+
+async function getAllPokemon() {
+
+    let response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=10000');
+    let data = await response.json();
+    data.results.forEach(pokemon => {
+        PokemonList[pokemon.name] = pokemon.url;
+    });
+    console.log(PokemonList);
+}
 
 async function FetchURLToJason(URL) {
     let response = await fetch(URL);
@@ -40,7 +68,6 @@ async function getPokemonGen() {
     fillDropdown();
 }
 
-
 function fillDropdown() {
     GenList.forEach((gen, index) => {
         const option = document.createElement('option');
@@ -52,15 +79,21 @@ function fillDropdown() {
 
 function getLocalStorage() {
     const savedGen = localStorage.getItem('selectedGen');
+    range = JSON.parse(localStorage.getItem('selectedCount'));
     if (savedGen) {
         selectElementGen.value = savedGen;
     } else {
         selectElementGen.value = 5;
     }
+    if (range) {
+        selectElementCount.Value = range;
+    } else {
+        selectElementCount.value = 4;
+    }
 }
 
 async function getPokemonURL(id) {
-    let URL = `${pokemonURL}${id}`;
+    const URL = `${pokemonURL}${id}`;
     pokemon = await FetchURLToJason(URL);
 }
 
@@ -68,7 +101,10 @@ async function getPokemon(id) {
     await getPokemonURL(id);
     const genText = selectElementGen.selectedOptions[0].textContent;
     const gameKey = selectElementGenkeys[0];
+    PokemonDefineProperties(id, genText, gameKey)
+}
 
+function PokemonDefineProperties(id, genText, gameKey) {
     Object.defineProperty(myPokedex, id, {
         value: {
             name: pokemon.name,
@@ -93,7 +129,6 @@ function getPokemonStats(pokemon) {
         Speed: pokemon.stats[5].base_stat
     }
 };
-
 
 function renderPokemon() {
     const data = Object.getOwnPropertyNames(myPokedex);
@@ -166,6 +201,12 @@ function renderPokemonType(...types) {
     });
     return images;
 }
+
+selectElementCount.addEventListener('change', (event) => {
+    const selectedCount = event.target.value;
+    localStorage.setItem('selectedCount', selectedCount);
+    location.reload();
+});
 
 selectElementGen.addEventListener('change', (event) => {
     const selectedValue = event.target.value;
@@ -245,7 +286,6 @@ function flattenEvolutionChain(chainNode) {
     return results;
 }
 
-
 async function renderEvolutionImages(id) {
     await getEvolutionChainImage(id);
     return renderPokemonfindaname(id);
@@ -253,7 +293,6 @@ async function renderEvolutionImages(id) {
 
 function renderPokemonfindaname(id) {
     const placeholder = '<div class="Evolution-Placeholder">>></div>';
-
     let assembleEvoHTML = '';
     evolutionCache[id].forEach((thing) => {
         assembleEvoHTML += renderOptionevo(thing);
@@ -264,4 +303,17 @@ function renderPokemonfindaname(id) {
     }
     return assembleEvoHTML;
 }
+
+
+
+
+function fillCounterDropDown() {
+    Object.values(CountLimits).forEach((range, index) => {
+        const option = document.createElement('option');
+        option.value = index + 1;
+        option.textContent = range ? `${range[0] + 1} - ${range[1]}` : 'All';
+        selectElementCount.appendChild(option);
+    })
+}
+
 
