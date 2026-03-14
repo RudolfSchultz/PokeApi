@@ -15,18 +15,17 @@ const selectElementGenkeys = [];
 const pokemontypes = [];
 const evolutionCache = {};
 const PokemonList = {};
-let range;
-const CountLimits = {
-  1: [0, 151],
-  2: [151, 251],
-  3: [251, 386],
-  4: [386, 493],
-  5: [493, 649],
-  6: [649, 721],
-  7: [721, 809],
-  8: [809, 905],
-  9: [905, 1025]
-};
+const countLimits = [
+    [0, 151],
+    [151, 251],
+    [251, 386],
+    [386, 494],
+    [494, 649],
+    [649, 721],
+    [721, 809],
+    [809, 905],
+    [905, 1025],
+];
 
 async function init() {
     await getPokemonGen();
@@ -34,15 +33,38 @@ async function init() {
     getLocalStorage();
     viewGeneration();
     await getPokemonTypeIMG();
-    for (let i = range[0]; i <= range[1]; i++) {
-        await getPokemon(i);
-    };
+    await getPokemonGrind();
     renderPokemon();
 }
 
-function whichCount() {
-    const selectedCount = selectElementCount.selectedOptions[0].value;
-    range = CountLimits[selectedCount];
+
+async function getPokemonGrind() {
+    const RangeStart = Number(selectElementCount.selectedOptions[0].dataset.min);
+    const RangeEnd = Number(selectElementCount.selectedOptions[0].dataset.max);
+for (let i = RangeStart; i <= RangeEnd; i++) {
+        await getPokemon(i);
+        console.log(`Loaded Pokémon ID: ${i}`);
+    };
+}
+
+selectElementCount.addEventListener('change', (event) => {
+    const selectedoption = event.target.options[event.target.selectedIndex];
+    localStorage.setItem('selectedCount', event.target.value);
+    location.reload();
+});
+
+
+function fillCounterDropDown() {
+    countLimits.forEach((limits, index) => {
+        const option = document.createElement('option');
+        const min = limits[0] + 1;
+        const max = limits[1];
+        option.value = index; // Index als Referenz
+        option.textContent = `${min} - ${max}`;
+        option.dataset.min = min;
+        option.dataset.max = max;
+        selectElementCount.appendChild(option);
+    });
 }
 
 async function getAllPokemon() {
@@ -79,16 +101,16 @@ function fillDropdown() {
 
 function getLocalStorage() {
     const savedGen = localStorage.getItem('selectedGen');
-    range = JSON.parse(localStorage.getItem('selectedCount'));
     if (savedGen) {
         selectElementGen.value = savedGen;
     } else {
         selectElementGen.value = 5;
     }
-    if (range) {
-        selectElementCount.Value = range;
+    const savedCount = localStorage.getItem('selectedCount');
+    if (savedCount) {
+        selectElementCount.value = savedCount;
     } else {
-        selectElementCount.value = 4;
+        selectElementCount.value = 0;
     }
 }
 
@@ -202,17 +224,13 @@ function renderPokemonType(...types) {
     return images;
 }
 
-selectElementCount.addEventListener('change', (event) => {
-    const selectedCount = event.target.value;
-    localStorage.setItem('selectedCount', selectedCount);
-    location.reload();
-});
-
 selectElementGen.addEventListener('change', (event) => {
     const selectedValue = event.target.value;
     localStorage.setItem('selectedGen', selectedValue);
     location.reload();
 });
+
+
 
 function openDialog(id) {
     let dialogBody = document.getElementById('pokemon-view');
@@ -304,16 +322,5 @@ function renderPokemonfindaname(id) {
     return assembleEvoHTML;
 }
 
-
-
-
-function fillCounterDropDown() {
-    Object.values(CountLimits).forEach((range, index) => {
-        const option = document.createElement('option');
-        option.value = index + 1;
-        option.textContent = range ? `${range[0] + 1} - ${range[1]}` : 'All';
-        selectElementCount.appendChild(option);
-    })
-}
 
 
