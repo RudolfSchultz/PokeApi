@@ -64,6 +64,9 @@
     width: auto;
 }
 
+
+
+
 .grass {
     background-color: rgb(120, 200, 80);
 }
@@ -152,7 +155,6 @@ dialog[open] {
     border-radius: 20px;
 }
 
-
 .pokemon-details {
     display: flex;
     flex-direction: column;
@@ -202,4 +204,48 @@ dialog[open] {
     border: none;
     cursor: pointer;
     font-size: 0.8em;
+}
+
+.pokemon-decision-options {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    width: 90%;
+}
+
+.pokemon-decision-options table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.6em;
+}
+
+.pokemon-decision-options table td:first-child {
+    width: 50%;
+    font-weight: bold;    
+}
+
+.Evolution-Placeholder {
+    display: flex;
+    align-items: center;
+    color: rgb(255, 255, 255);
+}
+
+.Pokemon-details-image-background {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+}
+
+.pokemon-image-view {
+    height: 250px;
+    width: 250px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.loading-spinner-view {
+    width: 150px;
+    height: 150px;
 }

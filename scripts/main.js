@@ -41,9 +41,8 @@ async function init() {
 async function getPokemonGrind() {
     const RangeStart = Number(selectElementCount.selectedOptions[0].dataset.min);
     const RangeEnd = Number(selectElementCount.selectedOptions[0].dataset.max);
-for (let i = RangeStart; i <= RangeEnd; i++) {
+    for (let i = RangeStart; i <= RangeEnd; i++) {
         await getPokemon(i);
-        console.log(`Loaded Pokémon ID: ${i}`);
     };
 }
 
@@ -121,16 +120,19 @@ async function getPokemonURL(id) {
 
 async function getPokemon(id) {
     await getPokemonURL(id);
-    const genText = selectElementGen.selectedOptions[0].textContent;
-    const gameKey = selectElementGenkeys[0];
-    PokemonDefineProperties(id, genText, gameKey)
-}
+    // let genText = selectElementGen.selectedOptions[0].textContent;
+    // let gameKey = selectElementGenkeys[0];
+    // PokemonDefineProperties(id, genText, gameKey)
+    PokemonDefineProperties(id)
 
-function PokemonDefineProperties(id, genText, gameKey) {
+}
+// function PokemonDefineProperties(id, genText, gameKey) {
+function PokemonDefineProperties(id) {
     Object.defineProperty(myPokedex, id, {
         value: {
             name: pokemon.name,
-            image: pokemon.sprites.versions[`${genText}`]?.[gameKey]?.front_default || pokemon.sprites.front_default,
+            // image: PokemonSpritesDefault(genText, gameKey),
+            image: PokemonSpritesDefault(),
             types: pokemon.types.map(type => type.type.name),
             height: pokemon.height,
             weight: pokemon.weight,
@@ -139,6 +141,12 @@ function PokemonDefineProperties(id, genText, gameKey) {
             stats: getPokemonStats(pokemon),
         },
     });
+}
+// function PokemonSpritesDefault(genText, gameKey) {
+function PokemonSpritesDefault() {
+    let genText = selectElementGen.selectedOptions[0].textContent;
+    let gameKey = selectElementGenkeys[0];
+    return pokemon.sprites.versions[`${genText}`]?.[gameKey]?.front_default || pokemon.sprites.front_default;
 }
 
 function getPokemonStats(pokemon) {
@@ -258,7 +266,7 @@ document.getElementById('pokemon-view').addEventListener('click', (event) => {
 
 function decisionOptions(option, id) {
     let content = document.getElementById('decision-option-content');
-    content.innerHTML = '';
+    content.innerHTML = renderLoadingSpinner();
     switch (option) {
         case 'main':
             content.innerHTML = renderOptionmain(id);
@@ -281,35 +289,39 @@ async function getEvolutionChainImage(id) {
     let SpeciesData = await FetchURLToJason(`${SpeciesURL}${id}`);
     let chainUrl = SpeciesData.evolution_chain.url;
     let evolutionData = await FetchURLToJason(chainUrl);
-    const flatChain = flattenEvolutionChain(evolutionData.chain);
+    const flatChain = await flattenEvolutionChain(evolutionData.chain);
     flatChain.forEach(p => {
         evolutionCache[p.id] = flatChain;
     });
     return flatChain;
 }
 
-function flattenEvolutionChain(chainNode) {
+async function flattenEvolutionChain(chainNode) {
     let results = [];
-    const speciesName = chainNode.species.name;
-    const speciesId = chainNode.species.url.split('/').filter(Boolean).pop();
+    let speciesName = chainNode.species.name;
+    let speciesId = chainNode.species.url.split('/').filter(Boolean).pop();
+    await getPokemonURL(speciesId);
+    let speciesImage = PokemonSpritesDefault()
     results.push({
         name: speciesName,
-        id: parseInt(speciesId)
+        id: parseInt(speciesId),
+        image: speciesImage 
     });
     if (chainNode.evolves_to && chainNode.evolves_to.length > 0) {
-        chainNode.evolves_to.forEach(evolution => {
-            results = results.concat(flattenEvolutionChain(evolution));
-        });
+        for (const evolution of chainNode.evolves_to) {
+            let nextEvolution = await flattenEvolutionChain(evolution);
+            results = results.concat(nextEvolution);
+        };
     }
     return results;
 }
 
 async function renderEvolutionImages(id) {
     await getEvolutionChainImage(id);
-    return renderPokemonfindaname(id);
+    return assembleEvolutiuonView(id);
 }
 
-function renderPokemonfindaname(id) {
+function assembleEvolutiuonView(id) {
     const placeholder = '<div class="Evolution-Placeholder">>></div>';
     let assembleEvoHTML = '';
     evolutionCache[id].forEach((thing) => {

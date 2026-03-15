@@ -9,6 +9,7 @@ html {
     min-width: 100vw;
     margin: 0;
     padding: 0;
+    
 }
 
 body {
@@ -93,4 +94,7 @@ footer {
   color: aliceblue;
 }
 
-
+.loading-spinner {
+    width: 250px;
+    height: 250px;
+}
