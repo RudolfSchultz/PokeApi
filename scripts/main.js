@@ -46,7 +46,7 @@ async function getPokemonGrind() {
 }
 
 selectElementCount.addEventListener('change', (event) => {
-    const selectedoption = event.target.options[event.target.selectedIndex];
+    // const selectedoption = event.target.options[event.target.selectedIndex];
     localStorage.setItem('selectedCount', event.target.value);
     location.reload();
 });
@@ -57,15 +57,13 @@ function fillCounterDropDown() {
         const option = document.createElement('option');
         const min = limits[0] + 1;
         const max = limits[1];
-        option.value = index; // Index als Referenz
+        option.value = index; 
         option.textContent = `${min} - ${max}`;
         option.dataset.min = min;
         option.dataset.max = max;
         selectElementCount.appendChild(option);
     });
 }
-
-
 
 async function FetchURLToJason(URL) {
     let response = await fetch(URL);
@@ -252,8 +250,6 @@ document.getElementById('pokemon-view').addEventListener('click', (event) => {
     event.stopPropagation();
 });
 
-
-
 function decisionOptions(option, id) {
     let content = document.getElementById('decision-option-content');
     content.innerHTML = renderLoadingSpinner();
@@ -361,9 +357,7 @@ async function whatisgoingon() {
     let SearchPokemon = document.getElementById("search-input").value;
 
     if (SearchPokemon != '') {
-        for (let key in myPokedex) {
-            delete myPokedex[key];
-        }
+        
         getAllPokemon(1).then(value => {
             const comparison = value.results
             FilterPokemon(comparison, SearchPokemon)
