@@ -1,4 +1,5 @@
 const myPokedex = {};
+const SearchResult = {};
 const GenList = [];
 let pokemon;
 let alltypes;
@@ -7,14 +8,13 @@ const pokemonURL = `https://pokeapi.co/api/v2/pokemon/`;
 const pokemonEvolutionURL = `https://pokeapi.co/api/v2/evolution-chain/`;
 const typeURL = `https://pokeapi.co/api/v2/type/`;
 const SpeciesURL = `https://pokeapi.co/api/v2/pokemon-species/`;
-const dialog = document.getElementById('pokemon-view');
+const dialog = document.getElementById("pokemon-view");
 const dialogElement = document.querySelector("dialog");
-const selectElementGen = document.getElementById('gen-options');
-const selectElementCount = document.getElementById('count-options');
+const selectElementGen = document.getElementById("gen-options");
+const selectElementCount = document.getElementById("count-options");
 const selectElementGenkeys = [];
 const pokemontypes = [];
 const evolutionCache = {};
-const PokemonList = {};
 const countLimits = [
     [0, 151],
     [151, 251],
@@ -34,7 +34,6 @@ async function init() {
     viewGeneration();
     await getPokemonTypeIMG();
     await getPokemonGrind();
-    renderPokemon();
 }
 
 
@@ -66,15 +65,7 @@ function fillCounterDropDown() {
     });
 }
 
-async function getAllPokemon() {
 
-    let response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=10000');
-    let data = await response.json();
-    data.results.forEach(pokemon => {
-        PokemonList[pokemon.name] = pokemon.url;
-    });
-    console.log(PokemonList);
-}
 
 async function FetchURLToJason(URL) {
     let response = await fetch(URL);
@@ -120,29 +111,28 @@ async function getPokemonURL(id) {
 
 async function getPokemon(id) {
     await getPokemonURL(id);
-    // let genText = selectElementGen.selectedOptions[0].textContent;
-    // let gameKey = selectElementGenkeys[0];
-    // PokemonDefineProperties(id, genText, gameKey)
     PokemonDefineProperties(id)
+}
 
-}
-// function PokemonDefineProperties(id, genText, gameKey) {
 function PokemonDefineProperties(id) {
-    Object.defineProperty(myPokedex, id, {
-        value: {
-            name: pokemon.name,
-            // image: PokemonSpritesDefault(genText, gameKey),
-            image: PokemonSpritesDefault(),
-            types: pokemon.types.map(type => type.type.name),
-            height: pokemon.height,
-            weight: pokemon.weight,
-            experience: pokemon.base_experience,
-            abilities: pokemon.abilities.map(ability => ability.ability.name),
-            stats: getPokemonStats(pokemon),
-        },
-    });
+
+    if (!myPokedex[id]) {
+        Object.defineProperty(myPokedex, id, {
+            value: {
+                name: pokemon.name,
+                image: PokemonSpritesDefault(),
+                types: pokemon.types.map(type => type.type.name),
+                height: pokemon.height,
+                weight: pokemon.weight,
+                experience: pokemon.base_experience,
+                abilities: pokemon.abilities.map(ability => ability.ability.name),
+                stats: getPokemonStats(pokemon),
+            },
+        });
+    }
+    renderPokemon();
 }
-// function PokemonSpritesDefault(genText, gameKey) {
+
 function PokemonSpritesDefault() {
     let genText = selectElementGen.selectedOptions[0].textContent;
     let gameKey = selectElementGenkeys[0];
@@ -305,7 +295,7 @@ async function flattenEvolutionChain(chainNode) {
     results.push({
         name: speciesName,
         id: parseInt(speciesId),
-        image: speciesImage 
+        image: speciesImage
     });
     if (chainNode.evolves_to && chainNode.evolves_to.length > 0) {
         for (const evolution of chainNode.evolves_to) {
@@ -336,3 +326,75 @@ function assembleEvolutiuonView(id) {
 
 
 
+
+
+
+
+
+
+
+// Suche Segment
+
+
+
+const UpdateSearchPokemon = document.getElementById("search-input");
+let SolutionPokemonSearch = []
+let searchTimeout;
+
+UpdateSearchPokemon.addEventListener('input', () => {
+    clearTimeout(searchTimeout);
+
+    searchTimeout = setTimeout(async () => {
+        await whatisgoingon();
+    }
+        , 500);
+});
+
+
+async function getAllPokemon() {
+    let response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1025');
+    let data = await response.json();
+    return data;
+}
+
+async function whatisgoingon() {
+    let SearchPokemon = document.getElementById("search-input").value;
+
+    if (SearchPokemon != '') {
+        for (let key in myPokedex) {
+            delete myPokedex[key];
+        }
+        getAllPokemon(1).then(value => {
+            const comparison = value.results
+            FilterPokemon(comparison, SearchPokemon)
+        })
+    }
+    else {
+        location.reload();
+
+    }
+}
+
+async function FilterPokemon(comparison, SearchPokemon) {
+    const Vergleichnamen = [];
+    comparison.forEach((id) => {
+
+        let urlid = (id.url)
+        let VergleichnamenID = urlid.split('/').filter(Boolean).pop();
+
+        Vergleichnamen.push({
+            name: id.name,
+            id: VergleichnamenID
+        });
+    })
+
+    SolutionPokemonSearch = Vergleichnamen.filter(name => name.name.includes(SearchPokemon))
+
+    console.log(SolutionPokemonSearch)
+
+    let limitedSelection = SolutionPokemonSearch.slice(0, 100)
+
+    for (const name of limitedSelection) {
+        await getPokemon(name.id)
+    }
+}
