@@ -15,6 +15,7 @@ const selectElementCount = document.getElementById("count-options");
 const selectElementGenkeys = [];
 const pokemontypes = [];
 const evolutionCache = {};
+let temporaryDex = []
 const countLimits = [
     [0, 151],
     [151, 251],
@@ -38,17 +39,23 @@ async function init() {
 
 
 async function getPokemonGrind() {
+    temporaryDex.length = 0;
     const RangeStart = Number(selectElementCount.selectedOptions[0].dataset.min);
     const RangeEnd = Number(selectElementCount.selectedOptions[0].dataset.max);
     for (let i = RangeStart; i <= RangeEnd; i++) {
+        if (!myPokedex[i]) {
         await getPokemon(i);
+    }
+    temporaryDex.push(i);
     };
+    renderDecision ()
 }
 
 selectElementCount.addEventListener('change', (event) => {
     // const selectedoption = event.target.options[event.target.selectedIndex];
     localStorage.setItem('selectedCount', event.target.value);
-    location.reload();
+    renderPokemon();
+    getPokemonGrind();
 });
 
 
@@ -128,7 +135,6 @@ function PokemonDefineProperties(id) {
             },
         });
     }
-    renderPokemon();
 }
 
 function PokemonSpritesDefault() {
@@ -148,13 +154,31 @@ function getPokemonStats(pokemon) {
     }
 };
 
-function renderPokemon() {
-    const data = Object.getOwnPropertyNames(myPokedex);
+
+function renderDecision (limitedSelection) {
+    if (!limitedSelection) {
+        renderPokemon(temporaryDex)
+    }
+    else {
+        let renderList = [];
+        limitedSelection.forEach(thing => {
+            renderList.push(thing.id)
+        })
+
+        renderPokemon(renderList)
+    }
+
+    
+}
+
+function renderPokemon(renderList) {
     let html = '';
     let listContainer = document.getElementById('pokedex-container');
-    data.forEach(id => {
+    if (renderList) {
+    renderList.forEach(id => {
         html += renderPokemonFrontTemplate(id);
     });
+}
     listContainer.innerHTML = html;
 }
 
@@ -320,18 +344,7 @@ function assembleEvolutiuonView(id) {
     return assembleEvoHTML;
 }
 
-
-
-
-
-
-
-
-
-
 // Suche Segment
-
-
 
 const UpdateSearchPokemon = document.getElementById("search-input");
 let SolutionPokemonSearch = []
@@ -364,7 +377,7 @@ async function whatisgoingon() {
         })
     }
     else {
-        location.reload();
+        renderDecision ()
 
     }
 }
@@ -384,11 +397,12 @@ async function FilterPokemon(comparison, SearchPokemon) {
 
     SolutionPokemonSearch = Vergleichnamen.filter(name => name.name.includes(SearchPokemon))
 
-    console.log(SolutionPokemonSearch)
 
     let limitedSelection = SolutionPokemonSearch.slice(0, 100)
 
     for (const name of limitedSelection) {
+        if (!myPokedex[name.id]) {
         await getPokemon(name.id)
-    }
+        }};
+    renderDecision (limitedSelection)
 }
