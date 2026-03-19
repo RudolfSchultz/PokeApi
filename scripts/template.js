@@ -1,12 +1,14 @@
 function renderPokemonFrontTemplate(id) {
-    return `<a class="pokemon-card" onclick="openDialog(${id})">
+    return `<div class="pokemon-card" onclick="openDialog(${id})">
                 <div class="pokemon-card-header">
                     <div class="pokemon-id">#${id}</div>
                     <h2 class="pokemon-name">${myPokedex[id].name}</h2>
                 </div>    
+                <div class="${myPokedex[id].types[0]} pokemon-image-background">
                 <div class="pokemon-image ${myPokedex[id].types[0]}" style="background-image: url('${myPokedex[id].image}')" loading="lazy"></div>
+                </div>
                 <div class="pokemon-types">${renderPokemonType(...myPokedex[id].types).map(img => `<img src="${img}" alt="type-icon" class="type-icon">`).join('')}</div>
-            </a>`};
+            </div>`};
 
 function renderPokemonDetailsTemplate(id) {
     return `<div class="pokemon-details">
@@ -14,7 +16,7 @@ function renderPokemonDetailsTemplate(id) {
                     <div class="pokemon-details-id">#${id}</div>
                     <h2 class="pokemon-details-name">${myPokedex[id].name}</h2>
                 </div>
-                <div class="${myPokedex[id].types[0]} Pokemon-details-image-background">
+                <div class="${myPokedex[id].types[0]} pokemon-details-image-background">
                 <div class="pokemon-image-view" style="background-image: url('${myPokedex[id].image}')"></div>
                 </div>
                 <div class="pokemon-types">${renderPokemonType(...myPokedex[id].types).map(img => `<img src="${img}" alt="type-icon" class="type-icon">`).join('')}</div>
@@ -80,7 +82,10 @@ function renderOptionstats(id) {
 }
 
 function renderOptionevo(thing) {
-    return `<img class="pokemon-evo-image" src="${thing.image}" alt="${thing.name}">`
+    return `<div class="">
+            <img class="pokemon-evo-image" src="${thing.image}" alt="${thing.name}">
+            <p>${thing.name}</p>
+            </div>`
 }
 
 function renderLoadingSpinner() {

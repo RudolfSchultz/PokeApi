@@ -12,23 +12,29 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    cursor: pointer;
     gap: 10px;
     background-color: rgba(66, 108, 128, 0.897);
-    padding: 10px;
-    height: fit-content;
-    border-radius: 10px;
     width: 200px;
-    height: 260px;
+    height: 280px;
+}
+
+.pokemon-card:hover{
+    scale: 1.1;
 }
 
 .pokemon-card-header {
     display: flex;
     justify-content: space-between;
     width: 100%;
+    padding: 5px 0;
 }
 
 .pokemon-id {
+    display: flex;
     position: relative;
+    align-items: center;
+    left: 10px;
     color: rgb(255, 255, 255);
     font-size: 0.5em;
 }
@@ -49,6 +55,17 @@
     background-repeat: no-repeat;
     background-position: center;
 }
+
+.pokemon-image-background:hover {
+    box-shadow: inset 0 0 10px 5px rgb(255, 255, 255);
+}
+
+.pokemon-image-background {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 
 .pokemon-types {
     display: flex;
@@ -149,6 +166,8 @@ dialog[open] {
     display: flex;
 }
 
+
+
 .pokemon-details-view {
     justify-content: center;
     padding: 0;
@@ -234,11 +253,10 @@ dialog[open] {
     color: rgb(255, 255, 255);
 }
 
-.Pokemon-details-image-background {
+.pokemon-details-image-background {
     width: 100%;
     display: flex;
     justify-content: center;
-
 }
 
 .pokemon-image-view {
