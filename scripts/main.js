@@ -8,6 +8,7 @@ const pokemonURL = `https://pokeapi.co/api/v2/pokemon/`;
 const pokemonEvolutionURL = `https://pokeapi.co/api/v2/evolution-chain/`;
 const typeURL = `https://pokeapi.co/api/v2/type/`;
 const SpeciesURL = `https://pokeapi.co/api/v2/pokemon-species/`;
+const listContainer = document.getElementById('pokedex-container');
 const dialog = document.getElementById("pokemon-view");
 const dialogElement = document.querySelector("dialog");
 const selectElementGen = document.getElementById("gen-options");
@@ -44,17 +45,15 @@ async function getPokemonGrind() {
     const RangeEnd = Number(selectElementCount.selectedOptions[0].dataset.max);
     for (let i = RangeStart; i <= RangeEnd; i++) {
         if (!myPokedex[i]) {
-        await getPokemon(i);
-    }
-    temporaryDex.push(i);
+            await getPokemon(i);
+        }
+        temporaryDex.push(i);
     };
-    renderDecision ()
+    renderDecision()
 }
 
 selectElementCount.addEventListener('change', (event) => {
-    // const selectedoption = event.target.options[event.target.selectedIndex];
     localStorage.setItem('selectedCount', event.target.value);
-    renderPokemon();
     getPokemonGrind();
 });
 
@@ -64,7 +63,7 @@ function fillCounterDropDown() {
         const option = document.createElement('option');
         const min = limits[0] + 1;
         const max = limits[1];
-        option.value = index; 
+        option.value = index;
         option.textContent = `${min} - ${max}`;
         option.dataset.min = min;
         option.dataset.max = max;
@@ -115,6 +114,7 @@ async function getPokemonURL(id) {
 }
 
 async function getPokemon(id) {
+    listContainer.innerHTML = renderLoadingSpinner();
     await getPokemonURL(id);
     PokemonDefineProperties(id)
 }
@@ -152,10 +152,9 @@ function getPokemonStats(pokemon) {
         SpecialDefense: pokemon.stats[4].base_stat,
         Speed: pokemon.stats[5].base_stat
     }
-};
+}
 
-
-function renderDecision (limitedSelection) {
+function renderDecision(limitedSelection) {
     if (!limitedSelection) {
         renderPokemon(temporaryDex)
     }
@@ -164,21 +163,17 @@ function renderDecision (limitedSelection) {
         limitedSelection.forEach(thing => {
             renderList.push(thing.id)
         })
-
         renderPokemon(renderList)
     }
-
-    
 }
 
 function renderPokemon(renderList) {
     let html = '';
-    let listContainer = document.getElementById('pokedex-container');
     if (renderList) {
-    renderList.forEach(id => {
-        html += renderPokemonFrontTemplate(id);
-    });
-}
+        renderList.forEach(id => {
+            html += renderPokemonFrontTemplate(id);
+        });
+    }
     listContainer.innerHTML = html;
 }
 
@@ -370,14 +365,14 @@ async function whatisgoingon() {
     let SearchPokemon = document.getElementById("search-input").value;
 
     if (SearchPokemon != '') {
-        
+
         getAllPokemon(1).then(value => {
             const comparison = value.results
             FilterPokemon(comparison, SearchPokemon)
         })
     }
     else {
-        renderDecision ()
+        renderDecision()
 
     }
 }
@@ -402,7 +397,8 @@ async function FilterPokemon(comparison, SearchPokemon) {
 
     for (const name of limitedSelection) {
         if (!myPokedex[name.id]) {
-        await getPokemon(name.id)
-        }};
-    renderDecision (limitedSelection)
+            await getPokemon(name.id)
+        }
+    };
+    renderDecision(limitedSelection)
 }

@@ -4,11 +4,15 @@ function renderPokemonFrontTemplate(id) {
                     <div class="pokemon-id">#${id}</div>
                     <h2 class="pokemon-name">${myPokedex[id].name}</h2>
                 </div>    
-                <div class="${myPokedex[id].types[0]} pokemon-image-background">
+                <div class="pokemon-image-background">
                 <div class="pokemon-image ${myPokedex[id].types[0]}" style="background-image: url('${myPokedex[id].image}')" loading="lazy"></div>
                 </div>
                 <div class="pokemon-types">${renderPokemonType(...myPokedex[id].types).map(img => `<img src="${img}" alt="type-icon" class="type-icon">`).join('')}</div>
             </div>`};
+
+function renderLoadingSpinner(){
+    return `<img class="loading-spinner" src="./assets/LoadingSpinner/pokemon.gif" alt="Lädt...">`
+}
 
 function renderPokemonDetailsTemplate(id) {
     return `<div class="pokemon-details">
@@ -56,27 +60,27 @@ function renderOptionstats(id) {
     return `<table>
                 <tr>
                     <td>HP:</td>
-                    <td>${myPokedex[id].stats.HP}</td>
+                    <td><progress class="statbar" max="180" value="${myPokedex[id].stats.HP}"</progress></td>
                 </tr>
                 <tr>
                     <td>Attack:</td>
-                    <td>${myPokedex[id].stats.Attack}</td>
+                    <td><progress class="statbar"max="180" value="${myPokedex[id].stats.Attack}"</progress></td>
                 </tr>
-                <tr>
+                <tr>                    
                     <td>Defense:</td>
-                    <td>${myPokedex[id].stats.Defense}</td>
+                    <td><progress class="statbar"max="180" value="${myPokedex[id].stats.Defense}"</progress></td>
                 </tr>
                 <tr>
                     <td>Special Attack:</td>
-                    <td>${myPokedex[id].stats.SpecialAttack}</td>
+                    <td><progress class="statbar"max="180" value="${myPokedex[id].stats.SpecialAttack}"</progress></td>
                 </tr>
                 <tr>
                     <td>Special Defense:</td>
-                    <td>${myPokedex[id].stats.SpecialDefense}</td>
+                    <td><progress class="statbar"max="180" value="${myPokedex[id].stats.SpecialDefense}"</progress></td>
                 </tr>
                 <tr>
                     <td>Speed:</td>
-                    <td>${myPokedex[id].stats.Speed}</td>
+                    <td><progress class="statbar"max="180" value="${myPokedex[id].stats.Speed}"</progress></td>
                 </tr>
             </table>`;
 }

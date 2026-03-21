@@ -17,26 +17,29 @@
     background-color: rgba(66, 108, 128, 0.897);
     width: 200px;
     height: 280px;
+    border-radius: 10px;
 }
 
-.pokemon-card:hover{
+.pokemon-card:hover {
     scale: 1.1;
 }
 
 .pokemon-card-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
-    padding: 5px 0;
+    background-color: rgb(7, 24, 32);
+    padding: 10px 0;
 }
 
 .pokemon-id {
-    display: flex;
     position: relative;
-    align-items: center;
-    left: 10px;
     color: rgb(255, 255, 255);
-    font-size: 0.5em;
+    left: 10px;
+    font-size: 15px;
+    width: 0;
+    overflow: visible;
 }
 
 .pokemon-name {
@@ -50,14 +53,14 @@
 
 .pokemon-image {
     height: 150px;
-    width: 150px;
-    background-size: cover;
+    width: 100%;
+    background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
 }
 
-.pokemon-image-background:hover {
-    box-shadow: inset 0 0 10px 5px rgb(255, 255, 255);
+.pokemon-image:hover {
+    box-shadow: inset 0 0 20px 5px rgb(255, 255, 255);
 }
 
 .pokemon-image-background {
@@ -65,7 +68,6 @@
     display: flex;
     justify-content: center;
 }
-
 
 .pokemon-types {
     display: flex;
@@ -81,8 +83,21 @@
     width: auto;
 }
 
+.statbar {
+    appearance: none; 
+    -webkit-appearance: none;
+}
 
+.statbar::-webkit-progress-value {
+  background-color: #6e0b0b; /* Hier deine Wunschfarbe (z.B. Grün) */
+  border-radius: 1px;
+  box-shadow: 0 0 10px rgba(151, 11, 11, 0.7); /* Optional: Ein leichtes Leuchten */
+}
 
+.statbar::-webkit-progress-bar {
+  background-color: rgba(151, 11, 11, 0.2);
+  border-radius: 5px;
+}
 
 .grass {
     background-color: rgb(120, 200, 80);
@@ -183,7 +198,6 @@ dialog[open] {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    gap: 20px;
     background-color: rgba(66, 108, 128, 0.897);
 }
 
@@ -193,12 +207,16 @@ dialog[open] {
     align-items: center;
     width: 100%;
     background-color: rgb(7, 24, 32);
+    padding: 10px 0;
 }
 
 .pokemon-details-id {
-    position: fixed;
+    position: relative;
     color: rgb(255, 255, 255);
-    padding-left: 5px;
+    left: 10px;
+    font-size: 15px;
+    width: 0;
+    overflow: visible;
 }
 
 .pokemon-details-name {
@@ -244,7 +262,7 @@ dialog[open] {
 
 .pokemon-decision-options table td:first-child {
     width: 50%;
-    font-weight: bold;    
+    font-weight: bold;
 }
 
 .Evolution-Placeholder {
