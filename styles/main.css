@@ -4,7 +4,7 @@ html {
     font-size: 24px;
     font-family: 'Oswald', sans-serif;
     scroll-behavior: smooth;
-    background-color: rgb(7, 24, 32);
+    background-color: rgb(5, 23, 30);
     min-height: 100vh;
     min-width: 100vw;
     margin: 0;
@@ -29,7 +29,7 @@ body:has(dialog[open]) {
 header {
     display: flex;
     justify-content: Center;
-    background-color: rgb(10, 34, 44);
+    background-color: rgb(10, 32, 41);
     height: 100px;
 }
 
@@ -38,13 +38,13 @@ main {
     flex-direction: column;
     align-items: center;
     flex: 1;
-    background-color: rgb(7, 24, 32);
+    background-color: rgb(5, 23, 30);
 }
 
 footer {
     display: flex;
     justify-content: center;
-    background-color: rgb(10, 34, 44);
+    background-color: rgb(10, 32, 41);
     height: 100px;
     padding: 0px 10px;
 }

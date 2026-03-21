@@ -1,8 +1,8 @@
 function renderPokemonFrontTemplate(id) {
     return `<div class="pokemon-card" onclick="openDialog(${id})">
                 <div class="pokemon-card-header">
-                    <div class="pokemon-id">#${id}</div>
                     <h2 class="pokemon-name">${myPokedex[id].name}</h2>
+                    <div class="pokemon-id">#${id}</div>
                 </div>    
                 <div class="pokemon-image-background">
                 <div class="pokemon-image ${myPokedex[id].types[0]}" style="background-image: url('${myPokedex[id].image}')" loading="lazy"></div>
@@ -24,7 +24,6 @@ function renderPokemonDetailsTemplate(id) {
                 <div class="pokemon-image-view" style="background-image: url('${myPokedex[id].image}')"></div>
                 </div>
                 <div class="pokemon-types">${renderPokemonType(...myPokedex[id].types).map(img => `<img src="${img}" alt="type-icon" class="type-icon">`).join('')}</div>
-
                 <div class="pokemon-details-option-buttons">
                     <button onclick="decisionOptions('main', ${id})">Main</button>
                     <button onclick="decisionOptions('stats', ${id})">Stats</button>

@@ -13,10 +13,9 @@
     justify-content: flex-start;
     align-items: center;
     cursor: pointer;
-    gap: 10px;
     background-color: rgba(66, 108, 128, 0.897);
     width: 200px;
-    height: 280px;
+    height: 300px;
     border-radius: 10px;
 }
 
@@ -29,14 +28,15 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    background-color: rgb(7, 24, 32);
+    background-color: rgb(8, 32, 41, 0.8);
     padding: 10px 0;
 }
 
 .pokemon-id {
     position: relative;
-    color: rgb(255, 255, 255);
-    left: 10px;
+    color: rgb(0, 0, 0);
+    top: 35px;
+    right: 45px;
     font-size: 15px;
     width: 0;
     overflow: visible;
@@ -45,10 +45,13 @@
 .pokemon-name {
     text-align: center;
     color: rgb(255, 255, 255);
-    font-size: 0.8em;
+    font-size: 0.7em;
     text-transform: capitalize;
-    flex: 0 0 auto;
     margin: auto;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .pokemon-image {
@@ -76,6 +79,7 @@
     flex-wrap: wrap;
     color: rgb(255, 255, 255);
     font-size: 0.6em;
+    padding: 10px;
 }
 
 .pokemon-types img {
@@ -84,19 +88,21 @@
 }
 
 .statbar {
-    appearance: none; 
+    appearance: none;
     -webkit-appearance: none;
 }
 
 .statbar::-webkit-progress-value {
-  background-color: #6e0b0b; /* Hier deine Wunschfarbe (z.B. Grün) */
-  border-radius: 1px;
-  box-shadow: 0 0 10px rgba(151, 11, 11, 0.7); /* Optional: Ein leichtes Leuchten */
+    background-color: #6e0b0b;
+    /* Hier deine Wunschfarbe (z.B. Grün) */
+    border-radius: 1px;
+    box-shadow: 0 0 10px rgba(151, 11, 11, 0.7);
+    /* Optional: Ein leichtes Leuchten */
 }
 
 .statbar::-webkit-progress-bar {
-  background-color: rgba(151, 11, 11, 0.2);
-  border-radius: 5px;
+    background-color: rgba(151, 11, 11, 0.2);
+    border-radius: 5px;
 }
 
 .grass {
@@ -206,7 +212,7 @@ dialog[open] {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    background-color: rgb(7, 24, 32);
+    background-color: rgb(8, 32, 41);
     padding: 10px 0;
 }
 
