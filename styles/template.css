@@ -13,9 +13,9 @@
     justify-content: flex-start;
     align-items: center;
     cursor: pointer;
-    background-color: rgba(66, 108, 128, 0.897);
+    background-color: rgb(10, 32, 41);
     width: 200px;
-    height: 300px;
+    height: 280px;
     border-radius: 10px;
 }
 
@@ -28,7 +28,7 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    background-color: rgb(8, 32, 41, 0.8);
+    /* background-color: rgb(8, 32, 41, 0.7); */
     padding: 10px 0;
 }
 
