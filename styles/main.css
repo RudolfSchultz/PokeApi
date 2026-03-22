@@ -11,7 +11,7 @@ html {
     scroll-behavior: smooth;
     background-color: rgb(5, 23, 30);
     min-height: 100vh;
-    min-width: 100vw;
+    min-width: 100%;
     margin: 0;
     padding: 0;
 }
@@ -53,6 +53,10 @@ footer {
     padding: 0px 10px;
 }
 
+.content-header {
+    padding: 20px;
+}
+
 .logo-container {
     display: flex;
     align-items: center;
@@ -60,7 +64,7 @@ footer {
 
 .Logo-headliner {
     margin: 0;
-
+    color: #fff;
 }
 
 .logo {
@@ -75,6 +79,7 @@ footer {
     gap: 20px;
     justify-content: center;
     flex: 1;
+    padding: 20px;
 }
 
 .flex-column {
