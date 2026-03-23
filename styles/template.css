@@ -4,9 +4,6 @@
     justify-content: center;
 }
 
-
-
-
 .pokemon-card {
     display: flex;
     flex-direction: column;
@@ -28,7 +25,6 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    /* background-color: rgb(8, 32, 41, 0.7); */
     padding: 10px 0;
 }
 
@@ -94,10 +90,8 @@
 
 .statbar::-webkit-progress-value {
     background-color: #6e0b0b;
-    /* Hier deine Wunschfarbe (z.B. Grün) */
     border-radius: 1px;
     box-shadow: 0 0 10px rgba(151, 11, 11, 0.7);
-    /* Optional: Ein leichtes Leuchten */
 }
 
 .statbar::-webkit-progress-bar {
@@ -176,10 +170,6 @@
 .flying {
     background-color: rgb(0, 255, 255);
 }
-
-
-
-
 
 /* Dialog */
 

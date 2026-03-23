@@ -1,8 +1,4 @@
-const myPokedex = {};
-const SearchResult = {};
-const GenList = [];
-let pokemon;
-let alltypes;
+
 const generationURL = `https://pokeapi.co/api/v2/generation`;
 const pokemonURL = `https://pokeapi.co/api/v2/pokemon/`;
 const pokemonEvolutionURL = `https://pokeapi.co/api/v2/evolution-chain/`;
@@ -13,10 +9,19 @@ const dialog = document.getElementById("pokemon-view");
 const dialogElement = document.querySelector("dialog");
 const selectElementGen = document.getElementById("gen-options");
 const selectElementCount = document.getElementById("count-options");
+const UpdateSearchPokemon = document.getElementById("search-input");
+const myPokedex = {};
+const SearchResult = {};
+const GenList = [];
+const compareName = [];
 const selectElementGenkeys = [];
 const pokemontypes = [];
 const evolutionCache = {};
+let SolutionPokemonSearch = []
 let temporaryDex = []
+let searchTimeout;
+let pokemon;
+let alltypes;
 const countLimits = [
     [0, 151],
     [151, 251],
@@ -38,7 +43,6 @@ async function init() {
     await getPokemonGrind();
 }
 
-
 async function getPokemonGrind() {
     temporaryDex.length = 0;
     const RangeStart = Number(selectElementCount.selectedOptions[0].dataset.min);
@@ -51,12 +55,6 @@ async function getPokemonGrind() {
     };
     renderDecision()
 }
-
-selectElementCount.addEventListener('change', (event) => {
-    localStorage.setItem('selectedCount', event.target.value);
-    getPokemonGrind();
-});
-
 
 function fillCounterDropDown() {
     countLimits.forEach((limits, index) => {
@@ -120,7 +118,6 @@ async function getPokemon(id) {
 }
 
 function PokemonDefineProperties(id) {
-
     if (!myPokedex[id]) {
         Object.defineProperty(myPokedex, id, {
             value: {
@@ -137,12 +134,6 @@ function PokemonDefineProperties(id) {
     }
 }
 
-function PokemonSpritesDefault() {
-    let genText = selectElementGen.selectedOptions[0].textContent;
-    let gameKey = selectElementGenkeys[0];
-    return pokemon.sprites.versions[`${genText}`]?.[gameKey]?.front_default || pokemon.sprites.front_default;
-}
-
 function getPokemonStats(pokemon) {
     return {
         HP: pokemon.stats[0].base_stat,
@@ -152,6 +143,12 @@ function getPokemonStats(pokemon) {
         SpecialDefense: pokemon.stats[4].base_stat,
         Speed: pokemon.stats[5].base_stat
     }
+}
+
+function PokemonSpritesDefault() {
+    let genText = selectElementGen.selectedOptions[0].textContent;
+    let gameKey = selectElementGenkeys[0];
+    return pokemon.sprites.versions[`${genText}`]?.[gameKey]?.front_default || pokemon.sprites.front_default;
 }
 
 function renderDecision(limitedSelection) {
@@ -239,14 +236,6 @@ function renderPokemonType(...types) {
     return images;
 }
 
-selectElementGen.addEventListener('change', (event) => {
-    const selectedValue = event.target.value;
-    localStorage.setItem('selectedGen', selectedValue);
-    location.reload();
-});
-
-
-
 function openDialog(id) {
     let dialogBody = document.getElementById('pokemon-view');
     dialogBody.innerHTML = renderPokemonDetailsTemplate(id);
@@ -258,16 +247,6 @@ function openDialog(id) {
 function closeDialog() {
     dialog.close();
 }
-
-dialogElement.addEventListener('click', (event) => {
-    if (event.target === dialogElement) {
-        closeDialog();
-    }
-});
-
-document.getElementById('pokemon-view').addEventListener('click', (event) => {
-    event.stopPropagation();
-});
 
 function decisionOptions(option, id) {
     let content = document.getElementById('decision-option-content');
@@ -341,18 +320,6 @@ function assembleEvolutiuonView(id) {
 
 //Suche Segment
 
-const UpdateSearchPokemon = document.getElementById("search-input");
-let SolutionPokemonSearch = []
-let searchTimeout;
-
-UpdateSearchPokemon.addEventListener('input', () => {
-    clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(async () => {
-        await compareChanges();
-    }
-        , 500);
-});
-
 async function getAllPokemon() {
     let response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1025');
     let data = await response.json();
@@ -402,4 +369,34 @@ function forEachComparison(comparison) {
     })
 }
 
-const compareName = [];
+// Eventlistener
+
+selectElementGen.addEventListener('change', (event) => {
+    const selectedValue = event.target.value;
+    localStorage.setItem('selectedGen', selectedValue);
+    location.reload();
+});
+
+
+selectElementCount.addEventListener('change', (event) => {
+    localStorage.setItem('selectedCount', event.target.value);
+    getPokemonGrind();
+});
+
+dialogElement.addEventListener('click', (event) => {
+    if (event.target === dialogElement) {
+        closeDialog();
+    }
+});
+
+document.getElementById('pokemon-view').addEventListener('click', (event) => {
+    event.stopPropagation();
+});
+
+UpdateSearchPokemon.addEventListener('input', () => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(async () => {
+        await compareChanges();
+    }
+        , 500);
+});
