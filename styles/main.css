@@ -10,6 +10,7 @@ html {
     font-family: 'Font';
     scroll-behavior: smooth;
     background-color: rgb(5, 23, 30);
+    color: #ffffff;
     min-height: 100vh;
     min-width: 100%;
     margin: 0;
@@ -34,7 +35,6 @@ header {
     display: flex;
     justify-content: Center;
     background-color: rgb(10, 32, 41);
-    height: 100px;
 }
 
 main {
@@ -122,4 +122,17 @@ footer {
 .loading-spinner {
     width: 250px;
     height: 250px;
+}
+
+@media(max-width:900px) {
+
+    html {
+        font-size: 16px;
+    }
+
+    .content-header {
+        flex-direction: column;
+        height: fit-content;
+        gap: 20px;
+    }
 }

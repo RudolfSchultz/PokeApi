@@ -187,7 +187,9 @@ dialog[open] {
     display: flex;
 }
 
-
+.pokemon-details-view::backdrop {
+    background-color: rgb(8, 32, 41, 0.9);
+}
 
 .pokemon-details-view {
     justify-content: center;
@@ -232,16 +234,10 @@ dialog[open] {
     margin: 0 auto;
 }
 
-.pokemon-evo-image {
-    height: 100px;
-    width: auto;
-}
-
 .pokemon-details-option-buttons {
     display: flex;
     justify-content: center;
     width: 100%;
-    height: 30px;
 }
 
 .pokemon-details-option-buttons button {
@@ -250,14 +246,23 @@ dialog[open] {
     color: rgb(255, 255, 255);
     border: none;
     cursor: pointer;
-    font-size: 0.8em;
+    font-size: 0.9em;
+    height: 35px;
+}
+
+.pokemon-details-option-buttons button:hover {
+    background-color: rgb(22, 65, 83);
+    color: #6e0b0b;
+
 }
 
 .pokemon-decision-options {
     display: flex;
-    gap: 10px;
+    flex-wrap: wrap;
     justify-content: center;
-    width: 90%;
+    overflow-y: auto;
+    gap: 10px;
+    width: 100%;
 }
 
 .pokemon-decision-options table {
@@ -294,4 +299,44 @@ dialog[open] {
 .loading-spinner-view {
     width: 150px;
     height: 150px;
+}
+
+.pokemon-evo-view {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+.pokemon-evo-view p {
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.pokemon-evo-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    height: auto;
+    flex: 1 1 100px;
+}
+
+.pokemon-decision-options::-webkit-scrollbar {
+    width: 8px;
+}
+
+.pokemon-decision-options::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.pokemon-decision-options::-webkit-scrollbar-thumb {
+    background: rgba(151, 11, 11, 0.4);
+    border-radius: 10px;
+}
+
+.pokemon-decision-options::-webkit-scrollbar-thumb:hover {
+    background: rgba(151, 11, 11, 0.8);
 }

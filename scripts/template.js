@@ -85,7 +85,7 @@ function renderOptionstats(id) {
 }
 
 function renderOptionevo(thing) {
-    return `<div class="">
+    return `<div class="pokemon-evo-view">
             <img class="pokemon-evo-image" src="${thing.image}" alt="${thing.name}">
             <p>${thing.name}</p>
             </div>`

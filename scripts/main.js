@@ -339,7 +339,7 @@ function assembleEvolutiuonView(id) {
     return assembleEvoHTML;
 }
 
-// Suche Segment
+//Suche Segment
 
 const UpdateSearchPokemon = document.getElementById("search-input");
 let SolutionPokemonSearch = []
@@ -347,13 +347,11 @@ let searchTimeout;
 
 UpdateSearchPokemon.addEventListener('input', () => {
     clearTimeout(searchTimeout);
-
     searchTimeout = setTimeout(async () => {
-        await whatisgoingon();
+        await compareChanges();
     }
         , 500);
 });
-
 
 async function getAllPokemon() {
     let response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1025');
@@ -361,11 +359,9 @@ async function getAllPokemon() {
     return data;
 }
 
-async function whatisgoingon() {
+async function compareChanges() {
     let SearchPokemon = document.getElementById("search-input").value;
-
     if (SearchPokemon != '') {
-
         getAllPokemon(1).then(value => {
             const comparison = value.results
             FilterPokemon(comparison, SearchPokemon)
@@ -373,32 +369,37 @@ async function whatisgoingon() {
     }
     else {
         renderDecision()
-
     }
 }
 
 async function FilterPokemon(comparison, SearchPokemon) {
-    const Vergleichnamen = [];
-    comparison.forEach((id) => {
-
-        let urlid = (id.url)
-        let VergleichnamenID = urlid.split('/').filter(Boolean).pop();
-
-        Vergleichnamen.push({
-            name: id.name,
-            id: VergleichnamenID
-        });
-    })
-
-    SolutionPokemonSearch = Vergleichnamen.filter(name => name.name.includes(SearchPokemon))
-
-
+    if (compareName.length === 0) {
+        forEachComparison(comparison)
+    }
+    SolutionPokemonSearch.length = 0;
+    SolutionPokemonSearch = compareName.filter(name => name.name.includes(SearchPokemon))
     let limitedSelection = SolutionPokemonSearch.slice(0, 100)
+    await forEveryNameof(limitedSelection)
+    renderDecision(limitedSelection)
+}
 
+async function forEveryNameof(limitedSelection) {
     for (const name of limitedSelection) {
         if (!myPokedex[name.id]) {
             await getPokemon(name.id)
         }
     };
-    renderDecision(limitedSelection)
 }
+
+function forEachComparison(comparison) {
+    comparison.forEach((id) => {
+        let urlid = (id.url)
+        let compareNameID = urlid.split('/').filter(Boolean).pop();
+        compareName.push({
+            name: id.name,
+            id: compareNameID
+        });
+    })
+}
+
+const compareName = [];
