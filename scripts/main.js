@@ -10,6 +10,8 @@ const dialogElement = document.querySelector("dialog");
 const selectElementGen = document.getElementById("gen-options");
 const selectElementCount = document.getElementById("count-options");
 const UpdateSearchPokemon = document.getElementById("search-input");
+const loadMoreButton = document.getElementById('load-more-button');
+
 const myPokedex = {};
 const SearchResult = {};
 const GenList = [];
@@ -22,6 +24,8 @@ let temporaryDex = []
 let searchTimeout;
 let pokemon;
 let alltypes;
+let currentLimit = 0;
+const RangeSize = 20;
 const countLimits = [
     [0, 151],
     [151, 251],
@@ -43,17 +47,41 @@ async function init() {
     await getPokemonGrind();
 }
 
-async function getPokemonGrind() {
-    temporaryDex.length = 0;
+async function getPokemonGrind(reset = false) {
+    const loadingArea = document.getElementById('loading-area');
     const RangeStart = Number(selectElementCount.selectedOptions[0].dataset.min);
     const RangeEnd = Number(selectElementCount.selectedOptions[0].dataset.max);
-    for (let i = RangeStart; i <= RangeEnd; i++) {
+
+    if (reset || currentLimit < RangeStart) {
+        temporaryDex.length = 0;
+        currentLimit = RangeStart;
+        listContainer.innerHTML = '';
+    }
+
+    loadingArea.innerHTML = renderLoadingSpinner();
+
+    const nextLimit = Math.min(currentLimit + RangeSize - 1, RangeEnd);
+    let newBatch = [];
+
+    for (let i = currentLimit; i <= nextLimit; i++) {
         if (!myPokedex[i]) {
             await getPokemon(i);
         }
         temporaryDex.push(i);
+        newBatch.push(i);
     };
-    renderDecision()
+    currentLimit = nextLimit + 1;
+    loadingArea.innerHTML = '';
+    hideloadmore(currentLimit, RangeEnd)
+    renderPokemon(newBatch, true);
+}
+
+function hideloadmore(currentLimit, RangeEnd) {
+    if (currentLimit > RangeEnd) {
+        loadMoreButton.style.display = 'none';
+    } else {
+        loadMoreButton.style.display = 'inline-block';
+    }
 }
 
 function fillCounterDropDown() {
@@ -112,7 +140,6 @@ async function getPokemonURL(id) {
 }
 
 async function getPokemon(id) {
-    listContainer.innerHTML = renderLoadingSpinner();
     await getPokemonURL(id);
     PokemonDefineProperties(id)
 }
@@ -151,27 +178,32 @@ function PokemonSpritesDefault() {
     return pokemon.sprites.versions[`${genText}`]?.[gameKey]?.front_default || pokemon.sprites.front_default;
 }
 
-function renderDecision(limitedSelection) {
+function renderDecision(limitedSelection, isBatchLoad = false) {
     if (!limitedSelection) {
-        renderPokemon(temporaryDex)
+        renderPokemon(temporaryDex, isBatchLoad)
     }
     else {
         let renderList = [];
         limitedSelection.forEach(thing => {
             renderList.push(thing.id)
         })
-        renderPokemon(renderList)
+        renderPokemon(renderList, false)
     }
 }
 
-function renderPokemon(renderList) {
+function renderPokemon(renderList, append = false) {
     let html = '';
     if (renderList) {
         renderList.forEach(id => {
             html += renderPokemonFrontTemplate(id);
         });
     }
-    listContainer.innerHTML = html;
+    if (append) {
+        listContainer.innerHTML += html;
+    } else {
+        listContainer.innerHTML += html;
+
+    }
 }
 
 function viewGeneration() {
@@ -380,7 +412,7 @@ selectElementGen.addEventListener('change', (event) => {
 
 selectElementCount.addEventListener('change', (event) => {
     localStorage.setItem('selectedCount', event.target.value);
-    getPokemonGrind();
+    getPokemonGrind(true);
 });
 
 dialogElement.addEventListener('click', (event) => {
