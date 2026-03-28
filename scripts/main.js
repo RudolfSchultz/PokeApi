@@ -9,9 +9,7 @@ const dialog = document.getElementById("pokemon-view");
 const dialogElement = document.querySelector("dialog");
 const selectElementGen = document.getElementById("gen-options");
 const selectElementCount = document.getElementById("count-options");
-const UpdateSearchPokemon = document.getElementById("search-input");
 const loadMoreButton = document.getElementById('load-more-button');
-
 const myPokedex = {};
 const SearchResult = {};
 const GenList = [];
@@ -201,7 +199,7 @@ function renderPokemon(renderList, append = false) {
     if (append) {
         listContainer.innerHTML += html;
     } else {
-        listContainer.innerHTML += html;
+        listContainer.innerHTML = html;
 
     }
 }
@@ -401,6 +399,14 @@ function forEachComparison(comparison) {
     })
 }
 
+async function UpdateSearchPokemon () {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(async () => {
+        await compareChanges();
+    }
+        , 1000);
+};
+
 // Eventlistener
 
 selectElementGen.addEventListener('change', (event) => {
@@ -425,10 +431,3 @@ document.getElementById('pokemon-view').addEventListener('click', (event) => {
     event.stopPropagation();
 });
 
-UpdateSearchPokemon.addEventListener('input', () => {
-    clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(async () => {
-        await compareChanges();
-    }
-        , 500);
-});

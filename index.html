@@ -23,7 +23,10 @@
                     <label for="count-options">Wähle:</label>
                     <select name="counter" id="count-options"></select>
                 </div>
-                <input type="text" id="search-input" placeholder="Search Pokemon...">
+                <form onreset="UpdateSearchPokemon()">
+                <input type="text" id="search-input" oninput="UpdateSearchPokemon()" placeholder="Search Pokemon...">
+                <button type="reset">Clear</button>
+                </form>
             </div>
             <div class="generation-control">
                 <label for="gen-options">Wähle Generation:</label>
