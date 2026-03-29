@@ -10,6 +10,7 @@ const dialogElement = document.querySelector("dialog");
 const selectElementGen = document.getElementById("gen-options");
 const selectElementCount = document.getElementById("count-options");
 const loadMoreButton = document.getElementById('load-more-button');
+const loadingArea = document.getElementById('loading-area');
 const myPokedex = {};
 const SearchResult = {};
 const GenList = [];
@@ -46,15 +47,10 @@ async function init() {
 }
 
 async function getPokemonGrind(reset = false) {
-    const loadingArea = document.getElementById('loading-area');
     const RangeStart = Number(selectElementCount.selectedOptions[0].dataset.min);
     const RangeEnd = Number(selectElementCount.selectedOptions[0].dataset.max);
 
-    if (reset || currentLimit < RangeStart) {
-        temporaryDex.length = 0;
-        currentLimit = RangeStart;
-        listContainer.innerHTML = '';
-    }
+    doResetOrLimitReached(RangeStart, reset);
 
     loadingArea.innerHTML = renderLoadingSpinner();
 
@@ -72,6 +68,14 @@ async function getPokemonGrind(reset = false) {
     loadingArea.innerHTML = '';
     hideloadmore(currentLimit, RangeEnd)
     renderPokemon(newBatch, true);
+}
+
+function doResetOrLimitReached(RangeStart, reset) {
+        if (reset || currentLimit < RangeStart) {
+        temporaryDex.length = 0;
+        currentLimit = RangeStart;
+        listContainer.innerHTML = '';
+    }
 }
 
 function hideloadmore(currentLimit, RangeEnd) {
@@ -200,7 +204,6 @@ function renderPokemon(renderList, append = false) {
         listContainer.innerHTML += html;
     } else {
         listContainer.innerHTML = html;
-
     }
 }
 
@@ -399,7 +402,7 @@ function forEachComparison(comparison) {
     })
 }
 
-async function UpdateSearchPokemon () {
+async function UpdateSearchPokemon() {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(async () => {
         await compareChanges();
