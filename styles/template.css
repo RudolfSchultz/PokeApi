@@ -41,7 +41,6 @@
 .pokemon-name {
     text-align: center;
     color: rgb(255, 255, 255);
-    font-size: 0.7em;
     text-transform: capitalize;
     margin: auto;
     display: -webkit-box;
@@ -183,19 +182,18 @@ dialog[open] {
 
 .pokemon-details-view {
     justify-content: center;
-    padding: 0;
-    width: 400px;
-    height: 600px;
     padding: 0px;
     background-color: rgb(10, 34, 44);
     border-radius: 20px;
+    height: 700px;    
 }
 
 .pokemon-details {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    width: 400px;
+    height: 650px;
     background-color: rgba(66, 108, 128, 0.897);
 }
 
@@ -219,7 +217,6 @@ dialog[open] {
 
 .pokemon-details-name {
     color: rgb(255, 255, 255);
-    font-size: 0.8em;
     text-transform: capitalize;
     margin: 0 auto;
 }
@@ -236,7 +233,7 @@ dialog[open] {
     color: rgb(255, 255, 255);
     border: none;
     cursor: pointer;
-    font-size: 0.9em;
+    font-size: clamp(16px, 1rem, 24px);
     height: 35px;
 }
 
@@ -311,6 +308,26 @@ dialog[open] {
     object-fit: contain;
     height: auto;
     flex: 1 1 100px;
+}
+
+.navigaten-button {
+    position: absolute;
+    top: 96%;           /* Vertikal in die Mitte */
+    transform: translateY(-50%);
+    z-index: 10;        /* Damit sie über der Karte liegen */
+    cursor: pointer;
+    background: white;  /* Nur als Beispiel, damit man sie sieht */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.left {
+    left: 100px
+}
+
+.right {
+    right: 100px;
 }
 
 .pokemon-decision-options::-webkit-scrollbar {

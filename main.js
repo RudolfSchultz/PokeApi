@@ -20,17 +20,16 @@ const pokemontypes = [];
 const evolutionCache = {};
 const RangeSize = 20;
 const countLimits = [
-    [0, 151],
-    [151, 251],
-    [251, 386],
-    [386, 494],
-    [494, 649],
-    [649, 721],
-    [721, 809],
-    [809, 905],
-    [905, 1025],
+    [0, 151, "Kanto"], 
+    [151, 251, 'Johto'], 
+    [251, 386, 'Hoenn'],  
+    [386, 493, 'Sinnoh'], 
+    [493, 649, 'Einall'], 
+    [649, 721, 'Kalos'], 
+    [721, 809, 'Alola'], 
+    [809, 905, 'Galar'], 
+    [905, 1025, 'Paldea'],    
 ];
-
 let SolutionPokemonSearch = []
 let temporaryDex = []
 let searchTimeout;
@@ -38,6 +37,7 @@ let pokemon;
 let alltypes;
 let currentLimit = 0;
 let searchActiv = false;
+let currentPokemonViewID = null;
 
 async function init() {
     await getPokemonGen();
@@ -99,8 +99,9 @@ function fillCounterDropDown() {
         const option = document.createElement('option');
         const min = limits[0] + 1;
         const max = limits[1];
+        const region = limits[2]
         option.value = index;
-        option.textContent = `${min} - ${max}`;
+        option.textContent = `${region}`;
         option.dataset.min = min;
         option.dataset.max = max;
         selectElementCount.appendChild(option);
@@ -190,14 +191,14 @@ function PokemonSpritesDefault() {
 
 function renderDecision(limitedSelection, isBatchLoad = false) {
     if (!limitedSelection) {
-        renderPokemon(temporaryDex, isBatchLoad)
+        getPokemonGrind(reset)
     }
     else {
         let renderList = [];
         limitedSelection.forEach(thing => {
             renderList.push(thing.id)
         })
-        renderPokemon(renderList, false)
+        renderPokemon(renderList, true)
     }
 }
 
@@ -284,6 +285,8 @@ function openDialog(id) {
     let content = document.getElementById('decision-option-content');
     content.innerHTML = renderOptionmain(id);
     dialog.showModal();
+    getEvolutionChainImage(id);
+    currentPokemonViewID = id;
 }
 
 function closeDialog() {
@@ -378,8 +381,8 @@ function compareChanges(reset) {
         })
     }
     else {
-        renderDecision()
         searchActiv = false;
+        renderDecision();
     }
 }
 
@@ -437,19 +440,14 @@ async function UpdateSearchPokemon() {
         , 1000);
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+function loadDefaultOrSearch() {
+    if (searchActiv) {
+        compareChanges();
+    }
+    else {
+        getPokemonGrind()
+    }
+}
 
 // Eventlistener
 
@@ -459,9 +457,9 @@ selectElementGen.addEventListener('change', (event) => {
     location.reload();
 });
 
-
 selectElementCount.addEventListener('change', (event) => {
     localStorage.setItem('selectedCount', event.target.value);
+    searchActiv = false; 
     getPokemonGrind(true);
 });
 
@@ -475,19 +473,16 @@ document.getElementById('pokemon-view').addEventListener('click', (event) => {
     event.stopPropagation();
 });
 
-
-
-
-
-
-
-function loadDefaultOrSearch() {
-    if (searchActiv) {
-        console.log(searchActiv, 'Ey mach ma suche fertig')
-        compareChanges();
+function navigate(direction) {
+    const allCards = Array.from(document.querySelectorAll('.pokemon-card'));
+    const currentIndex = allCards.findIndex(card => card.id === `card-${currentPokemonViewID}`);
+    console.log (currentIndex)
+    let nextIndex = currentIndex + direction;
+    if (nextIndex < 0) {
+        nextIndex = allCards.length - 1;
+    } else if (nextIndex >= allCards.length) {
+        nextIndex = 0;
     }
-    else {
-        getPokemonGrind()
-        console.log (searchActiv)
-    }
+    const nextId = Number(allCards[nextIndex].id.replace('card-', ''));
+    openDialog(nextId);
 }

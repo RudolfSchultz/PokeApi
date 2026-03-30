@@ -1,5 +1,5 @@
 function renderPokemonFrontTemplate(id) {
-    return `<div class="pokemon-card" onclick="openDialog(${id})">
+    return `<div class="pokemon-card" id="card-${id}" onclick="openDialog(${id})">
                 <div class="pokemon-card-header">
                     <h2 class="pokemon-name">${myPokedex[id].name}</h2>
                     <div class="pokemon-id">#${id}</div>
@@ -29,10 +29,11 @@ function renderPokemonDetailsTemplate(id) {
                     <button onclick="decisionOptions('stats', ${id})">Stats</button>
                     <button onclick="decisionOptions('evo', ${id})">Evo</button>
                 </div>
-                <div class="pokemon-decision-options" id="decision-option-content">
+                <div class="pokemon-decision-options" id="decision-option-content"></div>
                 </div>
+            <button class="navigaten-button left" onclick="navigate(-1)">◀</button>
+            <button class="navigaten-button right" onclick="navigate(1)">▶</button>
                 `};
-
 
 function renderOptionmain(id) {
     return `<table>
