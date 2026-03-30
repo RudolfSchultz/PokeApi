@@ -18,12 +18,6 @@ const compareName = [];
 const selectElementGenkeys = [];
 const pokemontypes = [];
 const evolutionCache = {};
-let SolutionPokemonSearch = []
-let temporaryDex = []
-let searchTimeout;
-let pokemon;
-let alltypes;
-let currentLimit = 0;
 const RangeSize = 20;
 const countLimits = [
     [0, 151],
@@ -36,6 +30,14 @@ const countLimits = [
     [809, 905],
     [905, 1025],
 ];
+
+let SolutionPokemonSearch = []
+let temporaryDex = []
+let searchTimeout;
+let pokemon;
+let alltypes;
+let currentLimit = 0;
+let searchActiv = false;
 
 async function init() {
     await getPokemonGen();
@@ -54,6 +56,23 @@ async function getPokemonGrind(reset = false) {
 
     loadingArea.innerHTML = renderLoadingSpinner();
 
+    let [nextLimit, newBatch] = await getNextLimit(RangeEnd);
+
+    currentLimit = nextLimit + 1;
+    loadingArea.innerHTML = '';
+    hideloadmore(currentLimit, RangeEnd)
+    renderPokemon(newBatch, true);
+}
+
+function doResetOrLimitReached(RangeStart, reset, fromSearch) {
+    if (reset || currentLimit < RangeStart) {
+        if (!fromSearch) {temporaryDex.length = 0;};
+        currentLimit = RangeStart;
+        listContainer.innerHTML = '';
+    }
+}
+
+async function getNextLimit(RangeEnd) {
     const nextLimit = Math.min(currentLimit + RangeSize - 1, RangeEnd);
     let newBatch = [];
 
@@ -64,18 +83,7 @@ async function getPokemonGrind(reset = false) {
         temporaryDex.push(i);
         newBatch.push(i);
     };
-    currentLimit = nextLimit + 1;
-    loadingArea.innerHTML = '';
-    hideloadmore(currentLimit, RangeEnd)
-    renderPokemon(newBatch, true);
-}
-
-function doResetOrLimitReached(RangeStart, reset) {
-        if (reset || currentLimit < RangeStart) {
-        temporaryDex.length = 0;
-        currentLimit = RangeStart;
-        listContainer.innerHTML = '';
-    }
+    return [nextLimit, newBatch];
 }
 
 function hideloadmore(currentLimit, RangeEnd) {
@@ -195,6 +203,7 @@ function renderDecision(limitedSelection, isBatchLoad = false) {
 
 function renderPokemon(renderList, append = false) {
     let html = '';
+     loadingArea.innerHTML = '';
     if (renderList) {
         renderList.forEach(id => {
             html += renderPokemonFrontTemplate(id);
@@ -359,28 +368,46 @@ async function getAllPokemon() {
     return data;
 }
 
-async function compareChanges() {
+function compareChanges(reset) {
     let SearchPokemon = document.getElementById("search-input").value;
     if (SearchPokemon != '') {
         getAllPokemon(1).then(value => {
             const comparison = value.results
-            FilterPokemon(comparison, SearchPokemon)
+            FilterPokemon(comparison, SearchPokemon, reset)
+            searchActiv = true;
         })
     }
     else {
         renderDecision()
+        searchActiv = false;
     }
 }
 
-async function FilterPokemon(comparison, SearchPokemon) {
+async function FilterPokemon(comparison, SearchPokemon, reset) {
     if (compareName.length === 0) {
         forEachComparison(comparison)
     }
     SolutionPokemonSearch.length = 0;
     SolutionPokemonSearch = compareName.filter(name => name.name.includes(SearchPokemon))
-    let limitedSelection = SolutionPokemonSearch.slice(0, 100)
+    let limitedSelection = getSearchGrind(SolutionPokemonSearch, reset);
     await forEveryNameof(limitedSelection)
     renderDecision(limitedSelection)
+}
+
+function getSearchGrind(Crowd, reset = false) {
+    const RangeStart = 0;
+    const RangeEnd = Number(Crowd.length);
+
+    doResetOrLimitReached(RangeStart, reset, fromSearch = true);
+
+    loadingArea.innerHTML = renderLoadingSpinner();
+
+    const nextLimit = Math.min(currentLimit + RangeSize - 1, RangeEnd);
+    let newBatch = Crowd.slice(currentLimit, nextLimit + 1);
+
+    currentLimit = nextLimit + 1;
+    hideloadmore(currentLimit, RangeEnd)
+    return newBatch;
 }
 
 async function forEveryNameof(limitedSelection) {
@@ -405,10 +432,24 @@ function forEachComparison(comparison) {
 async function UpdateSearchPokemon() {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(async () => {
-        await compareChanges();
+        compareChanges(reset = true);
     }
         , 1000);
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Eventlistener
 
@@ -434,3 +475,19 @@ document.getElementById('pokemon-view').addEventListener('click', (event) => {
     event.stopPropagation();
 });
 
+
+
+
+
+
+
+function loadDefaultOrSearch() {
+    if (searchActiv) {
+        console.log(searchActiv, 'Ey mach ma suche fertig')
+        compareChanges();
+    }
+    else {
+        getPokemonGrind()
+        console.log (searchActiv)
+    }
+}

@@ -53,6 +53,10 @@ footer {
     padding: 0px 10px;
 }
 
+td, p {
+  font-size: clamp(16px, 1rem, 20px);
+}
+
 .content-header {
     padding: 20px;
 }

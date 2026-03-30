@@ -23,13 +23,13 @@
                     <label for="count-options">Wähle:</label>
                     <select name="counter" id="count-options"></select>
                 </div>
-                <form onreset="UpdateSearchPokemon()">
+                <form onreset="UpdateSearchPokemon(searchActiv = false)">
                 <input type="text" id="search-input" oninput="UpdateSearchPokemon()" placeholder="Search Pokemon...">
                 <button type="reset">Clear</button>
                 </form>
             </div>
             <div class="generation-control">
-                <label for="gen-options">Wähle Generation:</label>
+                <label for="gen-options">Wähle das Aussehen:</label>
                 <select name="generation" id="gen-options"></select>
             </div>
 
@@ -40,7 +40,7 @@
         <div class="contentlimit flex-column">
             <div id="pokedex-container" class="pokedex-container"></div>
             <div id="loading-area"></div>
-            <button class="load-more-button" onclick="getPokemonGrind()" id="load-more-button"> Load More </button>
+            <button class="load-more-button" onclick="loadDefaultOrSearch()" id="load-more-button"> Load More </button>
         </div>
     </main>
 
