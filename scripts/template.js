@@ -31,8 +31,8 @@ function renderPokemonDetailsTemplate(id) {
                 </div>
                 <div class="pokemon-decision-options" id="decision-option-content"></div>
                 </div>
-            <button class="navigaten-button left" onclick="navigate(-1)">◀</button>
-            <button class="navigaten-button right" onclick="navigate(1)">▶</button>
+            <button class="navigaten-button left button-78" onclick="navigate(-1)">◀</button>
+            <button class="navigaten-button right button-78" onclick="navigate(1)">▶</button>
                 `};
 
 function renderOptionmain(id) {
