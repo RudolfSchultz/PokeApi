@@ -63,8 +63,9 @@ function navigate(direction) {
 
 function regionChanged() {
     let selectedValue = selectElementCount.selectedOptions[0].value
+    loadMoreButton.style.display = 'none';
     localStorage.setItem('selectedCount', selectedValue);
-    searchActiv = false; 
+    searchActiv = false;
     getPokemonGrind(true);
 }
 
@@ -72,7 +73,7 @@ function genChanged() {
     const selectedValue = selectElementGen.selectedOptions[0].value;
     localStorage.setItem('selectedGen', selectedValue);
     location.reload();
-} 
+}
 
 async function getPokemonGrind(reset = false) {
     const RangeStart = Number(selectElementCount.selectedOptions[0].dataset.min);
@@ -448,11 +449,15 @@ function forEachComparison(comparison) {
 }
 
 async function UpdateSearchPokemon() {
+    let input = document.getElementById("search-input").value;
+    if (input.length >= 3) {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(async () => {
+        loadMoreButton.style.display = 'none';
         compareChanges(reset = true);
     }
         , 1000);
+}
 };
 
 function loadDefaultOrSearch() {
