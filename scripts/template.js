@@ -15,7 +15,7 @@ function renderLoadingSpinner(){
 }
 
 function renderPokemonDetailsTemplate(id) {
-    return `<div class="pokemon-details">
+    return `<div class="pokemon-details" onclick="event.stopPropagation()">
                 <div class="pokemon-details-header">
                     <div class="pokemon-details-id">#${id}</div>
                     <h2 class="pokemon-details-name">${myPokedex[id].name}</h2>
@@ -30,9 +30,11 @@ function renderPokemonDetailsTemplate(id) {
                     <button onclick="decisionOptions('evo', ${id})">Evo</button>
                 </div>
                 <div class="pokemon-decision-options" id="decision-option-content"></div>
-                </div>
+            </div>
+                <div class="view-navigation" onclick="event.stopPropagation()">
             <button class="navigaten-button left button-78" onclick="navigate(-1)">◀</button>
             <button class="navigaten-button right button-78" onclick="navigate(1)">▶</button>
+            </div>
                 `};
 
 function renderOptionmain(id) {

@@ -21,7 +21,7 @@
             <div section class="search-container">
                 <div class="count-control">
                     <label for="count-options">Wähle deine Region:</label>
-                    <select name="counter" id="count-options"></select>
+                    <select name="counter" id="count-options" onchange="regionChanged()"></select>
                 </div>
                 <form onreset="UpdateSearchPokemon()">
                     <input type="text" id="search-input" oninput="UpdateSearchPokemon()"
@@ -31,7 +31,7 @@
             </div>
             <div class="generation-control">
                 <label for="gen-options">Wähle das Aussehen:</label>
-                <select name="generation" id="gen-options"></select>
+                <select name="generation" id="gen-options" onchange="genChanged()"></select>
             </div>
 
         </div>
@@ -51,7 +51,7 @@
         </div>
     </footer>
 
-    <dialog class="pokemon-details-view" id="pokemon-view">
+    <dialog class="pokemon-details-view" id="pokemon-view" onclick="closeDialog(event)">
     </dialog>
 
 </body>

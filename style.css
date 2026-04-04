@@ -135,6 +135,94 @@ h2 {
     height: 250px;
 }
 
+.load-more-button {
+    margin: 20px 0;
+    padding: 19px 26px;
+
+}
+
+.button-78 {
+    background-color: initial;
+    border-style: none;
+    color: #ffffff;
+    cursor: pointer;
+    flex-direction: row;
+    justify-content: center;
+    line-height: 24px;
+    position: relative;
+    user-select: none;
+    z-index: 0;
+}
+
+.button-78:before,
+.button-78:after {
+    border-radius: 80px;
+}
+
+.button-78:before {
+    background-image: linear-gradient(92.83deg, #ff1c1c 0%, #b31212 100%);
+    content: "";
+    display: block;
+    height: 100%;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: -2;
+}
+
+.button-78:after {
+    background-color: initial;
+    background-image: linear-gradient(#3d0a0a 0%, #111111 100%);
+    bottom: 4px;
+    content: "";
+    display: block;
+    left: 4px;
+    overflow: hidden;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    transition: all 100ms ease-out;
+    z-index: -1;
+}
+
+.button-78:hover:not(:disabled):before {
+    background: linear-gradient(92.83deg, #ff4d4d 0%, #ff1c1c 100%);
+    box-shadow: 0 0 15px rgba(255, 28, 28, 0.4);
+}
+
+.button-78:hover:not(:disabled):after {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    transition-timing-function: ease-in;
+    opacity: 0;
+}
+
+.button-78:active:not(:disabled) {
+    color: #ccc;
+}
+
+.button-78:active:not(:disabled):before {
+    background-image: linear-gradient(0deg, rgba(0, 0, 0, .3), rgba(0, 0, 0, .3)),
+        linear-gradient(92.83deg, #ff1c1c 0%, #b31212 100%);
+}
+
+.button-78:active:not(:disabled):after {
+    background-image: linear-gradient(#ff1c1c 0, #0c0d0d 100%);
+    bottom: 4px;
+    left: 4px;
+    right: 4px;
+    top: 4px;
+}
+
+.button-78:disabled {
+    cursor: default;
+    opacity: .24;
+}
+
 @media(max-width:900px) {
 
     html {

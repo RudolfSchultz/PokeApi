@@ -7,10 +7,10 @@ const SpeciesURL = `https://pokeapi.co/api/v2/pokemon-species/`;
 const listContainer = document.getElementById('pokedex-container');
 const dialog = document.getElementById("pokemon-view");
 const dialogElement = document.querySelector("dialog");
-const selectElementGen = document.getElementById("gen-options");
-const selectElementCount = document.getElementById("count-options");
 const loadMoreButton = document.getElementById('load-more-button');
 const loadingArea = document.getElementById('loading-area');
+const selectElementGen = document.getElementById("gen-options");
+const selectElementCount = document.getElementById("count-options");
 const myPokedex = {};
 const SearchResult = {};
 const GenList = [];
@@ -20,15 +20,15 @@ const pokemontypes = [];
 const evolutionCache = {};
 const RangeSize = 20;
 const countLimits = [
-    [0, 151, "Kanto"], 
-    [151, 251, 'Johto'], 
-    [251, 386, 'Hoenn'],  
-    [386, 493, 'Sinnoh'], 
-    [493, 649, 'Einall'], 
-    [649, 721, 'Kalos'], 
-    [721, 809, 'Alola'], 
-    [809, 905, 'Galar'], 
-    [905, 1025, 'Paldea'],    
+    [0, 151, "Kanto"],
+    [151, 251, 'Johto'],
+    [251, 386, 'Hoenn'],
+    [386, 493, 'Sinnoh'],
+    [493, 649, 'Einall'],
+    [649, 721, 'Kalos'],
+    [721, 809, 'Alola'],
+    [809, 905, 'Galar'],
+    [905, 1025, 'Paldea'],
 ];
 let SolutionPokemonSearch = []
 let temporaryDex = []
@@ -48,16 +48,38 @@ async function init() {
     await getPokemonGrind();
 }
 
+function navigate(direction) {
+    const allCards = Array.from(document.querySelectorAll('.pokemon-card'));
+    const currentIndex = allCards.findIndex(card => card.id === `card-${currentPokemonViewID}`);
+    let nextIndex = currentIndex + direction;
+    if (nextIndex < 0) {
+        nextIndex = allCards.length - 1;
+    } else if (nextIndex >= allCards.length) {
+        nextIndex = 0;
+    }
+    const nextId = Number(allCards[nextIndex].id.replace('card-', ''));
+    openDialog(nextId);
+}
+
+function regionChanged() {
+    let selectedValue = selectElementCount.selectedOptions[0].value
+    localStorage.setItem('selectedCount', selectedValue);
+    searchActiv = false; 
+    getPokemonGrind(true);
+}
+
+function genChanged() {
+    const selectedValue = selectElementGen.selectedOptions[0].value;
+    localStorage.setItem('selectedGen', selectedValue);
+    location.reload();
+} 
+
 async function getPokemonGrind(reset = false) {
     const RangeStart = Number(selectElementCount.selectedOptions[0].dataset.min);
     const RangeEnd = Number(selectElementCount.selectedOptions[0].dataset.max);
-
     doResetOrLimitReached(RangeStart, reset);
-
     loadingArea.innerHTML = renderLoadingSpinner();
-
     let [nextLimit, newBatch] = await getNextLimit(RangeEnd);
-
     currentLimit = nextLimit + 1;
     loadingArea.innerHTML = '';
     hideloadmore(currentLimit, RangeEnd)
@@ -66,7 +88,7 @@ async function getPokemonGrind(reset = false) {
 
 function doResetOrLimitReached(RangeStart, reset, fromSearch) {
     if (reset || currentLimit < RangeStart) {
-        if (!fromSearch) {temporaryDex.length = 0;};
+        if (!fromSearch) { temporaryDex.length = 0; };
         currentLimit = RangeStart;
         listContainer.innerHTML = '';
     }
@@ -75,7 +97,6 @@ function doResetOrLimitReached(RangeStart, reset, fromSearch) {
 async function getNextLimit(RangeEnd) {
     const nextLimit = Math.min(currentLimit + RangeSize - 1, RangeEnd);
     let newBatch = [];
-
     for (let i = currentLimit; i <= nextLimit; i++) {
         if (!myPokedex[i]) {
             await getPokemon(i);
@@ -204,7 +225,7 @@ function renderDecision(limitedSelection, isBatchLoad = false) {
 
 function renderPokemon(renderList, append = false) {
     let html = '';
-     loadingArea.innerHTML = '';
+    loadingArea.innerHTML = '';
     if (renderList) {
         renderList.forEach(id => {
             html += renderPokemonFrontTemplate(id);
@@ -363,8 +384,6 @@ function assembleEvolutiuonView(id) {
     return assembleEvoHTML;
 }
 
-//Suche Segment
-
 async function getAllPokemon() {
     let response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1025');
     let data = await response.json();
@@ -400,14 +419,10 @@ async function FilterPokemon(comparison, SearchPokemon, reset) {
 function getSearchGrind(Crowd, reset = false) {
     const RangeStart = 0;
     const RangeEnd = Number(Crowd.length);
-
     doResetOrLimitReached(RangeStart, reset, fromSearch = true);
-
     loadingArea.innerHTML = renderLoadingSpinner();
-
     const nextLimit = Math.min(currentLimit + RangeSize - 1, RangeEnd);
     let newBatch = Crowd.slice(currentLimit, nextLimit + 1);
-
     currentLimit = nextLimit + 1;
     hideloadmore(currentLimit, RangeEnd)
     return newBatch;
@@ -441,48 +456,11 @@ async function UpdateSearchPokemon() {
 };
 
 function loadDefaultOrSearch() {
+    loadMoreButton.style.display = 'none';
     if (searchActiv) {
         compareChanges();
     }
     else {
         getPokemonGrind()
     }
-}
-
-// Eventlistener
-
-selectElementGen.addEventListener('change', (event) => {
-    const selectedValue = event.target.value;
-    localStorage.setItem('selectedGen', selectedValue);
-    location.reload();
-});
-
-selectElementCount.addEventListener('change', (event) => {
-    localStorage.setItem('selectedCount', event.target.value);
-    searchActiv = false; 
-    getPokemonGrind(true);
-});
-
-dialogElement.addEventListener('click', (event) => {
-    if (event.target === dialogElement) {
-        closeDialog();
-    }
-});
-
-document.getElementById('pokemon-view').addEventListener('click', (event) => {
-    event.stopPropagation();
-});
-
-function navigate(direction) {
-    const allCards = Array.from(document.querySelectorAll('.pokemon-card'));
-    const currentIndex = allCards.findIndex(card => card.id === `card-${currentPokemonViewID}`);
-    console.log (currentIndex)
-    let nextIndex = currentIndex + direction;
-    if (nextIndex < 0) {
-        nextIndex = allCards.length - 1;
-    } else if (nextIndex >= allCards.length) {
-        nextIndex = 0;
-    }
-    const nextId = Number(allCards[nextIndex].id.replace('card-', ''));
-    openDialog(nextId);
 }
