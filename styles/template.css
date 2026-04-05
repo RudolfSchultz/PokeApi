@@ -346,3 +346,18 @@ dialog[open] {
 .pokemon-decision-options::-webkit-scrollbar-thumb:hover {
     background: rgba(151, 11, 11, 0.8);
 }
+
+.no-match {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 10px;
+    margin: 0 20px;
+}
+
+@media(max-width:900px) {
+    .no-match {
+    flex-direction: column;
+}
+}

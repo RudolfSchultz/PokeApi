@@ -97,3 +97,10 @@ function renderOptionevo(thing) {
 function renderLoadingSpinner() {
     return `<img class="loading-spinner-view" src="./assets/LoadingSpinner/pokemon.gif" alt="Lädt...">`
 }
+
+function renderNoMatch() {
+    return `<div class ="no-match">
+            <div class="loader"></div>
+            <p>Even Professor Oak is stumped - no results found.</p>
+            </div>`
+}

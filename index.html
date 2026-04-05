@@ -20,20 +20,19 @@
             </div>
             <div section class="search-container">
                 <div class="count-control">
-                    <label for="count-options">Wähle deine Region:</label>
+                    <label for="count-options">Select your region:</label>
                     <select name="counter" id="count-options" onchange="regionChanged()"></select>
                 </div>
-                <form onreset="UpdateSearchPokemon()">
+                <form onreset="UpdateSearchPokemon()" id="pokemon-search-form">
                     <input type="text" id="search-input" oninput="UpdateSearchPokemon()"
                         placeholder="Search Pokemon...">
                     <button type="reset" class="">Clear</button>
                 </form>
             </div>
             <div class="generation-control">
-                <label for="gen-options">Wähle das Aussehen:</label>
+                <label for="gen-options">Select appearance:</label>
                 <select name="generation" id="gen-options" onchange="genChanged()"></select>
             </div>
-
         </div>
     </header>
 
@@ -44,6 +43,7 @@
                 <img class="loading-spinner-view" src="./assets/LoadingSpinner/pokemon.gif" alt="Lädt...">
             </div>
             <button class="load-more-button button-78" onclick="loadDefaultOrSearch()" id="load-more-button"> Load More </button>
+            <div>
         </div>
     </main>
 

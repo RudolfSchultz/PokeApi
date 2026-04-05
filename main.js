@@ -11,6 +11,7 @@ const loadMoreButton = document.getElementById('load-more-button');
 const loadingArea = document.getElementById('loading-area');
 const selectElementGen = document.getElementById("gen-options");
 const selectElementCount = document.getElementById("count-options");
+const searchForm = document.getElementById("pokemon-search-form")
 const myPokedex = {};
 const SearchResult = {};
 const GenList = [];
@@ -66,6 +67,7 @@ function regionChanged() {
     loadMoreButton.style.display = 'none';
     localStorage.setItem('selectedCount', selectedValue);
     searchActiv = false;
+    searchForm.reset();
     getPokemonGrind(true);
 }
 
@@ -216,11 +218,15 @@ function renderDecision(limitedSelection, isBatchLoad = false) {
         getPokemonGrind(reset)
     }
     else {
+        if (limitedSelection.length != 0) {
         let renderList = [];
         limitedSelection.forEach(thing => {
             renderList.push(thing.id)
         })
-        renderPokemon(renderList, true)
+        renderPokemon(renderList, true)}
+        else {
+            loadingArea.innerHTML = renderNoMatch()
+        }
     }
 }
 
